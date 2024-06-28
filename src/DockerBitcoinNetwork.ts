@@ -24,7 +24,7 @@ export class DockerBitcoinNetwork {
         name: `bitcoin-node-${i}`,
         port: this.basePort + i,
         rpcPort: this.basePort + 1000 + i,
-        dataDir: path.join('./nodes', process.cwd(), `node${i}`),
+        dataDir: path.join( process.cwd(), `nodes/node${i}`),
       });
     }
   }

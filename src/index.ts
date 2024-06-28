@@ -8,8 +8,8 @@ const program = new Command();
 program
   .version('0.1.0')
   .description('BitBrew: Craft your own Bitcoin test networks with ease')
-  .option('-n, --nodes ', 'Number of nodes to brew', '3')
-  .option('-p, --port ', 'Base port for your brew', '18445')
+  .option('-n, --nodes <number>', 'Number of nodes to brew', '3')
+  .option('-p, --port <number>', 'Base port for your brew', '18445')
   .option('-s, --stop', 'Stop the brewing process')
   .action(async (options) => {
     const network = new DockerBitcoinNetwork(parseInt(options.nodes), parseInt(options.port));
