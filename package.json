@@ -1,0 +1,24 @@
+{
+  "name": "bitbrew",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "dockerode": "^4.0.2",
+    "figlet": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/dockerode": "^3.3.29",
+    "@types/node": "^20.14.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}
