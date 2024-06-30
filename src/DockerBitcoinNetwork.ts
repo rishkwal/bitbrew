@@ -81,17 +81,13 @@ export class DockerBitcoinNetwork {
     const container = await this.docker.createContainer({
       Image: imageName,
       name: node.name,
-      // ExposedPorts: {
-      //   [`${node.port}/tcp`]: {},
-      //   [`${node.rpcPort}/tcp`]: {},
-      // },
       NetworkingConfig: {
         EndpointsConfig: {
           'bitcoin-regtest': {},
         },
       },
       HostConfig: {
-      //   Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`],
+        Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`],
       //   // PortBindings: {
       //   //   [`${node.port}/tcp`]: [{ HostPort: `${node.port}` }],
       //   //   [`${node.rpcPort}/tcp`]: [{ HostPort: `${node.rpcPort}` }],

@@ -25,11 +25,8 @@ RUN set -ex \
     && rm *.tar.gz SHA256SUMS \
     && rm -rf /opt/bitcoin-${BITCOIN_VERSION}/bin/bitcoin-qt
 
-# Set up Bitcoin configuration
-COPY bitcoin.conf ${BITCOIN_DATA}/bitcoin.conf
-RUN chown -R bitcoin:bitcoin ${BITCOIN_DATA} \
-    && chmod 755 ${BITCOIN_DATA} \
-    && chmod 600 ${BITCOIN_DATA}/bitcoin.conf
+# Copy Bitcoin configuration
+COPY bitcoin.conf /etc/bitcoin.conf
 
 VOLUME ["/home/bitcoin/.bitcoin"]
 EXPOSE 18443 18444
