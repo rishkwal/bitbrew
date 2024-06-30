@@ -13,7 +13,7 @@ export class DockerBitcoinNetwork {
   private nodes: NodeConfig[] = [];
   private docker: Dockerode;
 
-  constructor(private readonly numberOfNodes: number, private readonly basePort: number = 18445) {
+  constructor(private readonly numberOfNodes: number) {
     this.docker = new Dockerode();
     this.initializeNodes();
   }
@@ -22,18 +22,30 @@ export class DockerBitcoinNetwork {
     for (let i = 0; i < this.numberOfNodes; i++) {
       this.nodes.push({
         name: `bitcoin-node-${i}`,
-        port: this.basePort + i,
-        rpcPort: this.basePort + 1000 + i,
+        port: 18444,
+        rpcPort: 18443,
         dataDir: path.join( process.cwd(), `nodes/node${i}`),
       });
     }
   }
 
   async startNetwork() {
+    console.log('Creating network...');
+    await this.createNetwork();
     for (const node of this.nodes) {
       await this.startNode(node);
     }
     await this.connectNodes();
+  }
+
+  private async createNetwork() {
+    const checkNetwork = await this.docker.listNetworks({ filters: { name: ['bitcoin-regtest'] } });
+    if (checkNetwork && checkNetwork.length > 0) {
+      console.log('Network already exists.');
+      return;
+    }
+    await this.docker.createNetwork({ Name: 'bitcoin-regtest' });
+    console.log('Network created successfully.');
   }
 
   private async startNode(node: NodeConfig): Promise<void> {
@@ -41,7 +53,7 @@ export class DockerBitcoinNetwork {
       fs.mkdirSync(node.dataDir, { recursive: true });
     }
 
-    const imageName = 'ruimarinho/bitcoin-core';
+    const imageName = 'bitcoin-regtest:1.0';
     const images = await this.docker.listImages({ filters: { reference: [imageName] } });
 
     if (images.length === 0) {
@@ -69,34 +81,36 @@ export class DockerBitcoinNetwork {
     const container = await this.docker.createContainer({
       Image: imageName,
       name: node.name,
-      ExposedPorts: {
-        [`${node.port}/tcp`]: {},
-        [`${node.rpcPort}/tcp`]: {},
-      },
-      HostConfig: {
-        Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`],
-        PortBindings: {
-          [`${node.port}/tcp`]: [{ HostPort: `${node.port}` }],
-          [`${node.rpcPort}/tcp`]: [{ HostPort: `${node.rpcPort}` }],
+      // ExposedPorts: {
+      //   [`${node.port}/tcp`]: {},
+      //   [`${node.rpcPort}/tcp`]: {},
+      // },
+      NetworkingConfig: {
+        EndpointsConfig: {
+          'bitcoin-regtest': {},
         },
       },
-      Cmd: [
-        'bitcoind',
-        '-regtest',
-        `-port=${node.port}`,
-        `-rpcport=${node.rpcPort}`,
-        '-server',
-        '-txindex',
-        '-rpcuser=user',
-        '-rpcpassword=pass',
-        '-rpcallowip=0.0.0.0/0',
-        '-printtoconsole',
-      ],
+      HostConfig: {
+      //   Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`],
+      //   // PortBindings: {
+      //   //   [`${node.port}/tcp`]: [{ HostPort: `${node.port}` }],
+      //   //   [`${node.rpcPort}/tcp`]: [{ HostPort: `${node.rpcPort}` }],
+      //   // },
+        NetworkMode: 'bitcoin-regtest',
+      },
     });
 
-    await container.start();
-    console.log(`Started node ${node.name} on port ${node.port}`);
-}
+    try {
+      await container.start();
+      console.log(`Started node ${node.name} on port ${node.port}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(`Error starting node ${node.name}:`, error.message);
+      } else {
+        console.error(`Unknown error starting node ${node.name}`);
+      }
+    }
+  }
 
 
   private async connectNodes() {
@@ -129,9 +143,21 @@ export class DockerBitcoinNetwork {
   async stopNetwork() {
     for (const node of this.nodes) {
       const container = this.docker.getContainer(node.name);
-      await container.stop();
-      await container.remove();
-      console.log(`Stopped and removed node ${node.name}`);
+      if (!container) {
+        console.log(`Node ${node.name} not found`);
+        continue;
+      }
+      
+      try {
+        await container.remove({ force: true });
+        console.log(`Removed container for node ${node.name}`);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(`Error removing container for node ${node.name}:`, error.message);
+        } else {
+          console.error(`Unknown error removing container for node ${node.name}`);
+        }
+      }
     }
   }
 }
