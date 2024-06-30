@@ -24,7 +24,7 @@ export class DockerBitcoinNetwork {
         name: `bitcoin-node-${i}`,
         port: 18444,
         rpcPort: 18443,
-        dataDir: path.join( process.cwd(), `nodes/node${i}`),
+        dataDir: path.join(process.cwd(), `nodes/node${i}`),
       });
     }
   }
@@ -34,6 +34,9 @@ export class DockerBitcoinNetwork {
     await this.createNetwork();
     for (const node of this.nodes) {
       await this.startNode(node);
+    }
+    for (const node of this.nodes) {
+      await this.waitForNodeReady(node);
     }
     await this.connectNodes();
   }
@@ -104,6 +107,46 @@ export class DockerBitcoinNetwork {
     }
   }
 
+  private async waitForNodeReady(node: NodeConfig, maxRetries = 30, retryInterval = 2000): Promise<void> {
+    console.log(`Waiting for node ${node.name} to be ready...`);
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        const container = this.docker.getContainer(node.name);
+        const exec = await container.exec({
+          Cmd: [
+            'bitcoin-cli',
+            '-regtest',
+            `-rpcport=${node.rpcPort}`,
+            '-rpcuser=user',
+            '-rpcpassword=pass',
+            'getblockchaininfo',
+          ],
+          AttachStdout: true,
+          AttachStderr: true,
+        });
+
+        const stream = await exec.start({ hijack: true, stdin: true });
+        const output = await new Promise<string>((resolve) => {
+          let data = '';
+          stream.on('data', (chunk) => {
+            data += chunk.toString();
+          });
+          stream.on('end', () => resolve(data));
+        });
+
+        if (output.includes('"chain": "regtest"')) {
+          console.log(`Node ${node.name} is ready.`);
+          return;
+        }
+      } catch (error) {
+        // Ignore errors and continue retrying
+      }
+
+      await new Promise(resolve => setTimeout(resolve, retryInterval));
+    }
+
+    throw new Error(`Timeout waiting for node ${node.name} to be ready`);
+  }
 
   private async connectNodes() {
     for (let i = 0; i < this.nodes.length; i++) {
