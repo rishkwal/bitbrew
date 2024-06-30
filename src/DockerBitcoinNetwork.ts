@@ -88,10 +88,6 @@ export class DockerBitcoinNetwork {
       },
       HostConfig: {
         Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`],
-      //   // PortBindings: {
-      //   //   [`${node.port}/tcp`]: [{ HostPort: `${node.port}` }],
-      //   //   [`${node.rpcPort}/tcp`]: [{ HostPort: `${node.rpcPort}` }],
-      //   // },
         NetworkMode: 'bitcoin-regtest',
       },
     });
@@ -153,6 +149,22 @@ export class DockerBitcoinNetwork {
         } else {
           console.error(`Unknown error removing container for node ${node.name}`);
         }
+      }
+    }
+    //delete network
+    const network = this.docker.getNetwork('bitcoin-regtest');
+    if (!network) {
+      console.log('Network not found');
+      return;
+    }
+    try {
+      await network.remove();
+      console.log('Removed network');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error removing network:', error.message);
+      } else {
+        console.error('Unknown error removing network');
       }
     }
   }
