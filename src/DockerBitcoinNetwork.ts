@@ -9,23 +9,53 @@ interface NodeConfig {
   dataDir: string;
 }
 
+interface NetworkState {
+  nodes: NodeConfig[];
+}
+
 export class DockerBitcoinNetwork {
   private nodes: NodeConfig[] = [];
   private docker: Dockerode;
+  private readonly stateFile: string;
+  private readonly numberOfNodes?: number;
 
-  constructor(private readonly numberOfNodes: number) {
+  constructor( numberOfNodes?: number) {
     this.docker = new Dockerode();
-    this.initializeNodes();
+    this.stateFile = path.join(process.cwd(), 'network-state.json');
+    this.loadState();
   }
 
-  private initializeNodes() {
-    for (let i = 0; i < this.numberOfNodes; i++) {
+  public initializeNodes(numberOfNodes: number) {
+    for (let i = 0; i < numberOfNodes; i++) {
       this.nodes.push({
         name: `bitcoin-node-${i}`,
         port: 18444,
         rpcPort: 18443,
         dataDir: path.join(process.cwd(), `nodes/node${i}`),
       });
+    }
+    this.saveState();
+  }
+
+  private saveState() {
+    const state: NetworkState = {
+      nodes: this.nodes,
+    };
+    fs.writeFileSync(this.stateFile, JSON.stringify(state, null, 2));
+  }
+  
+  private loadState(): boolean {
+    if (fs.existsSync(this.stateFile)) {
+      const state: NetworkState = JSON.parse(fs.readFileSync(this.stateFile, 'utf-8'));
+      this.nodes = state.nodes;
+      return true;
+    }
+    return false;
+  }
+
+  public deleteState() {
+    if (fs.existsSync(this.stateFile)) {
+      fs.unlinkSync(this.stateFile);
     }
   }
 
