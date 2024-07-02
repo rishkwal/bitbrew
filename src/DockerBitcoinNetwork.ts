@@ -7,6 +7,8 @@ interface NodeConfig {
   port: number;
   rpcPort: number;
   dataDir: string;
+  outboundConnections?: string[];
+  inboundConnections?: string[];
 }
 
 interface NetworkState {
@@ -17,9 +19,8 @@ export class DockerBitcoinNetwork {
   private nodes: NodeConfig[] = [];
   private docker: Dockerode;
   private readonly stateFile: string;
-  private readonly numberOfNodes?: number;
 
-  constructor( numberOfNodes?: number) {
+  constructor( ) {
     this.docker = new Dockerode();
     this.stateFile = path.join(process.cwd(), 'network-state.json');
     this.loadState();

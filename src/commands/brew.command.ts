@@ -7,7 +7,7 @@ export const BrewCommand = new Command()
     .option('-n, --nodes <number>', 'Number of nodes to brew', '2')
     .action(async (options) => {
         console.log('Brewing your Bitcoin network with', options.nodes, 'nodes...');
-        const network = new DockerBitcionNetwork(parseInt(options.nodes));
+        const network = new DockerBitcionNetwork();
         network.initializeNodes(parseInt(options.nodes));
         await network.startNetwork();
     })
