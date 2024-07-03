@@ -69,7 +69,6 @@ export class DockerBitcoinNetwork {
     for (const node of this.nodes) {
       await this.waitForNodeReady(node);
     }
-    await this.connectNodes();
   }
 
   private async createNetwork() {
@@ -179,12 +178,16 @@ export class DockerBitcoinNetwork {
     throw new Error(`Timeout waiting for node ${node.name} to be ready`);
   }
 
-  private async connectNodes() {
-    for (let i = 0; i < this.nodes.length - 1; i++) {
-      for (let j = i + 1; j < this.nodes.length; j++) {
-        const sourceNode = this.nodes[i]!;
-        const targetNode = this.nodes[j]!;
-
+  public async connectNodes(sourceNodeName: string, targetNodeNames: string[]) {
+    const sourceNode = this.nodes.find((node) => node.name === sourceNodeName);
+    if (!sourceNode) {
+      throw new Error(`Node ${sourceNodeName} not found`);
+    }
+    for(const targetNodeName of targetNodeNames) {
+        const targetNode = this.nodes.find((node) => node.name === targetNodeName);
+        if (!targetNode) {
+          throw new Error(`Node ${targetNodeName} not found`);
+        }
         const container = this.docker.getContainer(sourceNode.name);
         await container.exec({
           Cmd: [
@@ -200,9 +203,34 @@ export class DockerBitcoinNetwork {
           AttachStdout: true,
           AttachStderr: true,
         }).then((exec) => exec.start({ hijack: true, stdin: true }));
-
+        //check if connection was successful
+        // await new Promise(resolve => setTimeout(resolve, 2000));
+        // const exec = await container.exec({
+        //   Cmd: [
+        //     'bitcoin-cli',
+        //     '-regtest',
+        //     `-rpcport=${sourceNode.rpcPort}`,
+        //     '-rpcuser=user',
+        //     '-rpcpassword=pass',
+        //     'getpeerinfo',
+        //   ],
+        //   AttachStdout: true,
+        //   AttachStderr: true,
+        // });
+        // const stream = await exec.start({ hijack: true, stdin: true });
+        // const output = await new Promise<string>((resolve) => {
+        //   let data = '';
+        //   stream.on('data', (chunk) => {
+        //     data += chunk.toString();
+        //   });
+        //   stream.on('end', () => resolve(data));
+        // });
+        // if (output.includes(targetNode.name)) {
+        //   console.log(`Connected node ${sourceNode.name} to ${targetNode.name}`);
+        //   continue;
+        // }
+        // throw new Error(`Failed to connect node ${sourceNode.name} to ${targetNode.name}`);
         console.log(`Connected node ${sourceNode.name} to ${targetNode.name}`);
-      }
     }
   }
 
