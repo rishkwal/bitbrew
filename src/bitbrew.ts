@@ -2,7 +2,7 @@
 
 import { DockerBitcoinNetwork } from './DockerBitcoinNetwork';
 import { Command } from 'commander';
-const figlet = require('figlet');
+import figlet from 'figlet';
 import { BrewCommand, CleanCommand } from './commands';
 
 const program = new Command();
@@ -12,7 +12,7 @@ program
   .description('BitBrew: Craft your own Bitcoin test networks with ease')
   .action(() => {
     console.log(figlet.textSync('BitBrew',{
-      font: 'puffy',
+      font: 'Doom',
       horizontalLayout: 'default',
       verticalLayout: 'default'
     }));

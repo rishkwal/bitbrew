@@ -8,7 +8,7 @@ export const BrewCommand = new Command()
     .option('-n, --nodes <number>', 'Number of nodes to brew', '2')
     .action(async (options) => {
         console.log(figlet.textSync('BitBrew',{
-            font: 'Puffy',
+            font: 'Doom',
             horizontalLayout: 'default',
             verticalLayout: 'default'
           }));
