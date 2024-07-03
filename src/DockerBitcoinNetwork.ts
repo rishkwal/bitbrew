@@ -180,10 +180,10 @@ export class DockerBitcoinNetwork {
   }
 
   private async connectNodes() {
-    for (let i = 0; i < this.nodes.length; i++) {
+    for (let i = 0; i < this.nodes.length - 1; i++) {
       for (let j = i + 1; j < this.nodes.length; j++) {
-        const sourceNode = this.nodes[i];
-        const targetNode = this.nodes[j];
+        const sourceNode = this.nodes[i]!;
+        const targetNode = this.nodes[j]!;
 
         const container = this.docker.getContainer(sourceNode.name);
         await container.exec({
