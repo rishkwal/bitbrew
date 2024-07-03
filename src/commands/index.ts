@@ -1,3 +1,3 @@
-export { BrewCommand } from './brew.command'
-export { CleanCommand } from './clean.command'
-export { ConnectCommand } from './connect.command'
+export { BrewCommand } from './brewCommand'
+export { CleanCommand } from './cleanCommand'
+export { ConnectCommand } from './connectCommand'

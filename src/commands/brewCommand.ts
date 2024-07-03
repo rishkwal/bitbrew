@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import DockerBitcionNetwork from "../DockerBitcoinNetwork";
+import NetworkController from "../controllers/networkController";
 import figlet from 'figlet';
 
 export const BrewCommand = new Command()
@@ -13,7 +13,7 @@ export const BrewCommand = new Command()
             verticalLayout: 'default'
           }));
         console.log('Brewing your Bitcoin network with', options.nodes, 'nodes...');
-        const network = new DockerBitcionNetwork();
+        const network = new NetworkController();
         network.initializeNodes(parseInt(options.nodes));
         await network.startNetwork();
     })

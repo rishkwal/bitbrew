@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import DockerBitcoinNetwork from '../DockerBitcoinNetwork';
+import NetworkController from '../controllers/networkController';
 
 export const ConnectCommand = new Command()
     .name('connect')
@@ -8,7 +8,7 @@ export const ConnectCommand = new Command()
     .argument('<target-node...>', 'Target nodes to connect')
     .action(async (sourceNode, targetNodes) => {
         console.log('Connecting nodes...');
-        const network = new DockerBitcoinNetwork();
+        const network = new NetworkController();
         await network.connectNodes(sourceNode, targetNodes);
         console.log('Nodes connected');
     });
