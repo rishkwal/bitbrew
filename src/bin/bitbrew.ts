@@ -3,7 +3,7 @@ import { Command } from 'commander';
 import figlet from 'figlet';
 import { BrewCommand, CleanCommand, ConnectCommand } from '../commands';
 
-const program = new Command();
+const program: Command = new Command();
 
 program
   .version('0.1.0')
