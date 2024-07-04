@@ -20,9 +20,6 @@ program
     }));
     program.outputHelp();
   })
-  .hook('preSubcommand', () => {
-    console.log('Starting BitBrew...');
-  });
 
 program.addCommand(BrewCommand);
 program.addCommand(CleanCommand);
