@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import figlet from 'figlet';
-import { BrewCommand, CleanCommand, ConnectCommand } from './commands';
+import { BrewCommand, CleanCommand, ConnectCommand } from '../commands';
 
 const program = new Command();
 
