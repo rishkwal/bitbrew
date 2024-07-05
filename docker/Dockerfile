@@ -31,7 +31,7 @@ COPY bitcoin.conf /etc/bitcoin.conf
 VOLUME ["/home/bitcoin/.bitcoin"]
 EXPOSE 18443 18444
 
-COPY docker-entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 USER bitcoin
