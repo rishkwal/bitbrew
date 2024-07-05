@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { NodeConfig } from './types';
 import { StateController } from './stateController.js';
 import { DockerController } from './dockerController.js';
@@ -28,7 +27,7 @@ export class NetworkController {
                 name: `node-${i}`,
                 port: 18444,
                 rpcPort: 18443,
-                dataDir: path.join(process.cwd(), `nodes/node-${i}`)
+                dataDir: this.stateController.getNodeDataDir(`node-${i}`),
             });
         }
         this.stateController.saveState(this.nodes);

@@ -19,6 +19,10 @@ export class StateController{
         this.stateFile = path.join(this.paths.data, 'network-state.json');
     }
 
+    getNodeDataDir(nodeName: string) {
+        return path.join(this.paths.data, nodeName);
+    }
+
     createPaths() {
         fs.mkdirSync(this.paths.data, { recursive: true });
     }
