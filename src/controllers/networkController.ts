@@ -48,7 +48,7 @@ export class NetworkController {
         this.stateController.deleteState();
     }
 
-    async startNetwork() {
+    public async startNetwork() {
         console.log('Creating network...');
         await this.dockerController.createNetwork('bitcoin-regtest');
         for(const node of this.nodes) {
@@ -58,6 +58,16 @@ export class NetworkController {
         for (const node of this.nodes) {
             await this.nodeController.waitForNodeReady(node);
         }
+    }
+
+    public listNodes(): void{
+        console.table(this.nodes.map((node: NodeConfig) => {
+            return {
+                name: node.name,
+                port: node.port,
+                rpcPort: node.rpcPort,
+            };
+        }));
     }
 
     public async connectNodes(sourceNodeName: string, targetNodeNames: string[]) {
