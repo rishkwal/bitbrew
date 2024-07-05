@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { NodeConfig, NetworkState } from './types';
+import * as envPaths from 'env-paths';
 
 export class StateController{
     private readonly stateFile: string;
