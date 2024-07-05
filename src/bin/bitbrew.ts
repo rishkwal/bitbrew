@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import figlet from 'figlet';
-import { BrewCommand, CleanCommand, ConnectCommand } from '../commands';
+import { BrewCommand, 
+        CleanCommand, 
+        ConnectCommand,
+        StopCommand
+      } from '../commands';
 
 const program: Command = new Command();
 
@@ -16,12 +20,10 @@ program
     }));
     program.outputHelp();
   })
-  .hook('preSubcommand', () => {
-    console.log('Starting BitBrew...');
-  });
 
 program.addCommand(BrewCommand);
 program.addCommand(CleanCommand);
 program.addCommand(ConnectCommand);
+program.addCommand(StopCommand);
 
 program.parse(process.argv);

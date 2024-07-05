@@ -18,7 +18,12 @@ export class NetworkController {
         this.loadState();
     }
 
-    public initializeNodes(numberOfNodes: number) {
+    public initializeNodes(numberOfNodes: number): boolean {
+        this.stateController.loadState();
+        if(this.nodes.length > 0) {
+            console.log('A network already exists. Use `bitbrew start` to start the network.');
+            return false;
+        }
         for (let i = 0; i < numberOfNodes; i++) {
             this.nodes.push({
                 name: `node-${i}`,
@@ -28,6 +33,7 @@ export class NetworkController {
             });
         }
         this.stateController.saveState(this.nodes);
+        return true;
     }
 
     private loadState(): boolean {
@@ -47,6 +53,7 @@ export class NetworkController {
         console.log('Creating network...');
         await this.dockerController.createNetwork('bitcoin-regtest');
         for(const node of this.nodes) {
+            await this.nodeController.createNode(node);
             await this.nodeController.startNode(node);
         }
         for (const node of this.nodes) {
@@ -70,6 +77,12 @@ export class NetworkController {
     }
 
     async stopNetwork() {
+        for (const node of this.nodes) {
+            await this.nodeController.stopNode(node);
+        }
+    }
+
+    async cleanNetwork() {
         for (const node of this.nodes) {
             const container = this.dockerController.getContainer(node.name);
             try {
