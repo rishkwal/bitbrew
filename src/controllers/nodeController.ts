@@ -9,7 +9,7 @@ export class NodeController {
         this.dockerController = new DockerController();
     }
 
-    async startNode(node: NodeConfig): Promise<void> {
+    async createNode(node: NodeConfig): Promise<void> {
         if (!fs.existsSync(node.dataDir)) {
             fs.mkdirSync(node.dataDir, { recursive: true });
         }
@@ -21,8 +21,16 @@ export class NodeController {
             console.log(`Image ${imageName} not found, Pulling from registry...`)
             await this.dockerController.docker.pull(imageName);
         }
+        // Check if the container already exists
+        try {
+            const container = this.dockerController.getContainer(node.name);
+            await container.inspect()
+            return;
+        } catch (error) {
+            // Ignore error and continue creating the container
+        } 
 
-        const containter = await this.dockerController.createContainer({
+        await this.dockerController.createContainer({
             Image: imageName,
             name: node.name,
             NetworkingConfig: {
@@ -35,9 +43,12 @@ export class NodeController {
                 NetworkMode: 'bitcoin-regtest',
             }
         });
+    }
 
+    async startNode(node: NodeConfig): Promise<void> {
+        const container = this.dockerController.getContainer(node.name);
         try {
-            await containter.start();
+            await container.start();
             console.log(`Started node ${node.name}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -46,6 +57,12 @@ export class NodeController {
                 console.error('Unknown error starting node ${node.name}');
             }
         }
+    }
+
+    async stopNode(node: NodeConfig): Promise<void> {
+        const container = this.dockerController.getContainer(node.name);
+        await container.stop();
+        console.log(`Stopped node ${node.name}`);
     }
 
     async waitForNodeReady(node: NodeConfig, maxRetries = 30, retryInterval=2000): Promise<void> {

@@ -7,7 +7,7 @@ export const CleanCommand = new Command()
     .action(async () => {
         console.log('Cleaning up your Bitcoin network...');
         const network = new NetworkController();
-        await network.stopNetwork();
+        await network.cleanNetwork();
         network.deleteState();
         console.log('Bitcoin network cleaned up');
     });
