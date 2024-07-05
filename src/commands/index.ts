@@ -1,4 +1,4 @@
-export { BrewCommand } from './brewCommand'
-export { CleanCommand } from './cleanCommand'
-export { ConnectCommand } from './connectCommand'
-export { StopCommand } from './stopCommand'
+export { BrewCommand } from './brewCommand.js'
+export { CleanCommand } from './cleanCommand.js'
+export { ConnectCommand } from './connectCommand.js'
+export { StopCommand } from './stopCommand.js'
