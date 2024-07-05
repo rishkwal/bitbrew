@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import NetworkController from "../controllers/networkController";
+import NetworkController from "../controllers/networkController.js";
 import figlet from 'figlet';
 
 export const BrewCommand = new Command()

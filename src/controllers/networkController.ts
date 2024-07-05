@@ -1,8 +1,8 @@
 import * as path from 'path';
 import { NodeConfig } from './types';
-import { StateController } from './stateController';
-import { DockerController } from './dockerController';
-import { NodeController } from './nodeController';
+import { StateController } from './stateController.js';
+import { DockerController } from './dockerController.js';
+import { NodeController } from './nodeController.js';
 
 export class NetworkController {
     private nodes: NodeConfig[] = [];
@@ -11,8 +11,7 @@ export class NetworkController {
     private nodeController: NodeController;
 
     constructor() {
-        const stateFile = path.join(process.cwd(), 'network-state.json');
-        this.stateController = new StateController(stateFile);
+        this.stateController = new StateController();
         this.dockerController = new DockerController();
         this.nodeController = new NodeController();
         this.loadState();

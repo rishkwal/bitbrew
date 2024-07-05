@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import NetworkController from '../controllers/networkController';
+import NetworkController from '../controllers/networkController.js';
 
 export const ConnectCommand = new Command()
     .name('connect')

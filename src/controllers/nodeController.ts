@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-import { NodeConfig } from './types';
-import { DockerController } from './dockerController';
+import { NodeConfig } from './types.js';
+import { DockerController } from './dockerController.js';
 
 export class NodeController {
     private readonly dockerController: DockerController;

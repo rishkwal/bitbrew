@@ -5,7 +5,7 @@ import { BrewCommand,
         CleanCommand, 
         ConnectCommand,
         StopCommand
-      } from '../commands';
+      } from '../commands/index.js';
 
 const program: Command = new Command();
 
