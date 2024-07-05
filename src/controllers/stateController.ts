@@ -20,7 +20,7 @@ export class StateController{
     }
 
     getNodeDataDir(nodeName: string) {
-        return path.join(this.paths.data, nodeName);
+        return path.join(this.paths.data, 'nodes', nodeName);
     }
 
     createPaths() {
