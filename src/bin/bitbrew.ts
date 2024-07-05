@@ -4,7 +4,8 @@ import figlet from 'figlet';
 import { BrewCommand, 
         CleanCommand, 
         ConnectCommand,
-        StopCommand
+        StopCommand,
+        LsCommand
       } from '../commands/index.js';
 
 const program: Command = new Command();
@@ -25,5 +26,6 @@ program.addCommand(BrewCommand);
 program.addCommand(CleanCommand);
 program.addCommand(ConnectCommand);
 program.addCommand(StopCommand);
+program.addCommand(LsCommand);
 
 program.parse(process.argv);
