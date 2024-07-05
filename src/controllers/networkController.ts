@@ -61,6 +61,10 @@ export class NetworkController {
     }
 
     public listNodes(): void{
+        if(this.nodes.length === 0) {
+            console.log('No nodes found');
+            return;
+        }
         console.table(this.nodes.map((node: NodeConfig) => {
             return {
                 name: node.name,
