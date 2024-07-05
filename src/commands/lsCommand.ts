@@ -1,8 +1,10 @@
 import { Command } from "commander";
+import NetworkController from "../controllers/networkController.js";
 
 export const LsCommand = new Command()
     .name('ls')
-    .description('List your Bitcoin test network nodes')
+    .description('List your network nodes')
     .action(() => {
-        console.log('Listing your Bitcoin network nodes...');
+        const network = new NetworkController();
+        network.listNodes();
     });
