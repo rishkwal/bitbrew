@@ -8,10 +8,10 @@ const stateController = new StateController();
 const fileStream: StreamEntry = { stream: createWriteStream( path.join(stateController.getLogDir(), 'app.log'), {flags: 'a'}) };
 const consoleStream: StreamEntry = { level: 'info', stream: pino.transport({ target: 'pino-pretty', options: { colorize: true } }) };
 
-const logStream: (DestinationStream | StreamEntry)[] = [
+const logStream = [
     fileStream,
     process.env.LOG_TO_CONSOLE==='true' ? consoleStream : null,
-].filter(Boolean) as (DestinationStream | StreamEntry)[];
+] as (DestinationStream | StreamEntry)[];
 
 const errorSerializer = (error: Error) => {
     return {
