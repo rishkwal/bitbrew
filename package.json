@@ -18,6 +18,7 @@
     "dockerode": "^4.0.2",
     "env-paths": "^3.0.0",
     "figlet": "^1.7.0",
+    "ora": "^8.0.1",
     "pino": "^9.2.0"
   },
   "devDependencies": {
