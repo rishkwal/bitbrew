@@ -15,7 +15,6 @@ export class StateController{
 
     constructor() {
         this.paths = envPaths(this.appName, { suffix: '' });
-        this.createPaths();
     }
 
     public getNodeDataDir(nodeName: string) {
@@ -30,7 +29,7 @@ export class StateController{
         return path.join(this.paths.data, 'network-state.json');
     }
 
-    private createPaths() {
+    public createPaths() {
         fs.mkdirSync(this.paths.data, { recursive: true });
         fs.mkdirSync(this.paths.log, { recursive: true });
     }

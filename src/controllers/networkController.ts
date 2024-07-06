@@ -34,6 +34,10 @@ export class NetworkController {
         return true;
     }
 
+    public createPaths = () => {
+        this.stateController.createPaths();
+    }
+
     private loadState(): boolean {
         const loadedNodes = this.stateController.loadState();
         if (loadedNodes) {
