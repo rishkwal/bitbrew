@@ -11,17 +11,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type":"module",
+  "type": "module",
   "dependencies": {
     "commander": "^12.1.0",
     "dockerode": "^4.0.2",
     "env-paths": "^3.0.0",
-    "figlet": "^1.7.0"
+    "figlet": "^1.7.0",
+    "pino": "^9.2.0"
   },
   "devDependencies": {
     "@types/dockerode": "^3.3.29",
     "@types/figlet": "^1.5.8",
     "@types/node": "^20.14.9",
+    "pino-pretty": "^11.2.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
   }

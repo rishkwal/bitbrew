@@ -16,18 +16,24 @@ export class StateController{
 
     constructor() {
         this.paths = envPaths(this.appName, { suffix: '' });
+        this.createPaths();
         this.stateFile = path.join(this.paths.data, 'network-state.json');
     }
 
-    getNodeDataDir(nodeName: string) {
+    public getNodeDataDir(nodeName: string) {
         return path.join(this.paths.data, 'nodes', nodeName);
     }
 
-    createPaths() {
-        fs.mkdirSync(this.paths.data, { recursive: true });
+    public getLogDir() {
+        return this.paths.log;
     }
 
-    saveState(nodes: NodeConfig[]) {
+    private createPaths() {
+        fs.mkdirSync(this.paths.data, { recursive: true });
+        fs.mkdirSync(this.paths.log, { recursive: true });
+    }
+
+    public saveState(nodes: NodeConfig[]) {
         if (!fs.existsSync(this.paths.data)) {
             this.createPaths();
         }
@@ -35,7 +41,7 @@ export class StateController{
         fs.writeFileSync(this.stateFile, JSON.stringify(state, null, 2));
     }
 
-    loadState(): NodeConfig[] | null {
+    public loadState(): NodeConfig[] | null {
         if(fs.existsSync(this.stateFile)) {
             const state: NetworkState = JSON.parse(fs.readFileSync(this.stateFile, 'utf-8'));
             return state.nodes;
@@ -43,7 +49,7 @@ export class StateController{
         return null;
     }
 
-    deleteState() {
+    public deleteState() {
         if(fs.existsSync(this.stateFile)) {
             fs.unlinkSync(this.stateFile);
         }
