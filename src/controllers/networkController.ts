@@ -113,6 +113,7 @@ export class NetworkController {
             }
         }
         await this.dockerController.removeNetwork('bitcoin-regtest');
+        this.stateController.deleteAllNodes();
     }
 }
 

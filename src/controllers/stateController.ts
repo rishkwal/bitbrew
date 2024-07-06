@@ -55,4 +55,12 @@ export class StateController{
             fs.unlinkSync(this.getStateFile());
         }
     }
+
+    public deleteAllNodes() {
+        if(fs.existsSync(this.paths.data)) {
+            fs.rm(this.paths.data,{ recursive: true }, () => {
+                console.log('Deleted all nodes');
+            });
+        }
+    }
 }
