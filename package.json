@@ -13,6 +13,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "chalk": "^5.3.0",
     "commander": "^12.1.0",
     "dockerode": "^4.0.2",
     "env-paths": "^3.0.0",
