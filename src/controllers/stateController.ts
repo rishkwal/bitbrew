@@ -4,7 +4,6 @@ import { NodeConfig, NetworkState } from './types.js';
 import envPaths from 'env-paths';
 
 export class StateController{
-    private readonly stateFile: string;
     private readonly appName = 'bitbrew';
     private readonly paths: {
         data: string;
@@ -17,7 +16,6 @@ export class StateController{
     constructor() {
         this.paths = envPaths(this.appName, { suffix: '' });
         this.createPaths();
-        this.stateFile = path.join(this.paths.data, 'network-state.json');
     }
 
     public getNodeDataDir(nodeName: string) {
@@ -26,6 +24,10 @@ export class StateController{
 
     public getLogDir() {
         return this.paths.log;
+    }
+
+    private getStateFile() {
+        return path.join(this.paths.data, 'network-state.json');
     }
 
     private createPaths() {
@@ -38,20 +40,20 @@ export class StateController{
             this.createPaths();
         }
         const state: NetworkState = { nodes };
-        fs.writeFileSync(this.stateFile, JSON.stringify(state, null, 2));
+        fs.writeFileSync(this.getStateFile(), JSON.stringify(state, null, 2));
     }
 
     public loadState(): NodeConfig[] | null {
-        if(fs.existsSync(this.stateFile)) {
-            const state: NetworkState = JSON.parse(fs.readFileSync(this.stateFile, 'utf-8'));
+        if(fs.existsSync(this.getStateFile())) {
+            const state: NetworkState = JSON.parse(fs.readFileSync(this.getStateFile(), 'utf-8'));
             return state.nodes;
         }
         return null;
     }
 
     public deleteState() {
-        if(fs.existsSync(this.stateFile)) {
-            fs.unlinkSync(this.stateFile);
+        if(fs.existsSync(this.getStateFile())) {
+            fs.unlinkSync(this.getStateFile());
         }
     }
 }
