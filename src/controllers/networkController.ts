@@ -77,6 +77,15 @@ export class NetworkController {
         }));
     }
 
+    public async startNode(nodeName: string) {
+        const node = this.nodes.find((node) => node.name === nodeName);
+        if(node === undefined) {
+            console.log(`Node ${nodeName} not found`);
+            return;
+        }
+        await this.nodeController.startNode(node);
+    }
+
     public async connectNodes(sourceNodeName: string, targetNodeNames: string[]) {
         const sourceNode = this.nodes.find((node) => node.name === sourceNodeName);
         if(!sourceNode) {

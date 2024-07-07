@@ -61,6 +61,10 @@ export class NodeController {
 
     async stopNode(node: NodeConfig): Promise<void> {
         const container = this.dockerController.getContainer(node.name);
+        if((await container.inspect()).State.Running === false){
+            console.log(`Node ${node.name} is already stopped`);
+            return;
+        }
         await container.stop();
         console.log(`Stopped node ${node.name}`);
     }
