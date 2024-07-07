@@ -45,6 +45,17 @@ export class StateController{
         }
     }
 
+    public removeNode(nodeName: string) {
+        const state = this.loadState();
+        if(state && state.nodes) {
+            const nodeIndex = state.nodes.findIndex(n => n.name === nodeName);
+            if(nodeIndex >= 0) {
+                state.nodes.splice(nodeIndex, 1);
+                this.saveState(state.nodes);
+            }
+        }
+    }
+
     public saveState(nodes: NodeConfig[]) {
         if (!fs.existsSync(this.paths.data)) {
             this.createPaths();

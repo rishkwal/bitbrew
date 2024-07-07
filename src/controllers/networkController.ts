@@ -115,6 +115,17 @@ export class NetworkController {
         await this.nodeController.stopNode(node);
     }
 
+    public async removeNode(nodeName: string) {
+        const node = this.nodes.find((node) => node.name === nodeName);
+        if(node === undefined) {
+            console.log(`Node ${nodeName} not found`);
+            return;
+        }
+        await this.nodeController.removeNode(node);
+        this.nodes = this.nodes.filter((node) => node.name !== nodeName);
+        this.stateController.saveState(this.nodes);
+    }
+
     public async connectNodes(sourceNodeName: string, targetNodeNames: string[]) {
         const sourceNode = this.nodes.find((node) => node.name === sourceNodeName);
         if(!sourceNode) {
