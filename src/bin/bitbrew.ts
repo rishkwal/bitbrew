@@ -7,7 +7,8 @@ import { BrewCommand,
         StopCommand,
         LsCommand,
         StartCommand,
-        AddCommand
+        AddCommand,
+        RemoveCommand
       } from '../commands/index.js';
 
 const program: Command = new Command();
@@ -31,5 +32,6 @@ program.addCommand(StartCommand);
 program.addCommand(StopCommand);
 program.addCommand(AddCommand);
 program.addCommand(CleanCommand);
+program.addCommand(RemoveCommand);
 
 program.parse(process.argv);
