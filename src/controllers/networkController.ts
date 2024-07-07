@@ -1,10 +1,11 @@
-import { NodeConfig } from './types';
+import { NetworkState, NodeConfig } from './types';
 import { StateController } from './stateController.js';
 import { DockerController } from './dockerController.js';
 import { NodeController } from './nodeController.js';
 
 export class NetworkController {
     public nodes: NodeConfig[] = [];
+    public exist: boolean = false;
     private stateController: StateController;
     private dockerController: DockerController;
     private nodeController: NodeController;
@@ -29,8 +30,6 @@ export class NetworkController {
                 rpcPort: 18443,
                 status: 'initialized',
                 dataDir: this.stateController.getNodeDataDir(`node-${i}`),
-                inboundConnections: [],
-                outboundConnections: [],
             });
         }
         this.stateController.saveState(this.nodes);
@@ -42,9 +41,10 @@ export class NetworkController {
     }
 
     private loadState(): boolean {
-        const loadedNodes = this.stateController.loadState();
-        if (loadedNodes) {
-            this.nodes = loadedNodes;
+        const state: NetworkState | null = this.stateController.loadState();
+        if (state) {
+            this.nodes = state.nodes;
+            this.exist = state.exist;
             return true;
         }
         return false;
@@ -72,20 +72,29 @@ export class NetworkController {
             return;
         }
         console.table(this.nodes.map((node: NodeConfig) => {
-            const truncateConnections = (connections: string[]) => {
-                if (connections.length > 1) {
-                    return connections.slice(0, 1).join(', ') + `, ... (${connections.length - 1} more)`;
-                }
-                return connections.join(', ');
-            };
 
             return {
                 name: node.name,
                 status: node.status,
-                inbound: truncateConnections(node.inboundConnections),
-                outbound: truncateConnections(node.outboundConnections),
             };
         }));
+    }
+
+    public async addNode(nodeName: string) {
+        if(this.nodes.find((node) => node.name === nodeName)) {
+            console.log(`Node ${nodeName} already exists`);
+            return;
+        }
+        const newNode: NodeConfig = {
+            name: nodeName,
+            port: 18444,
+            rpcPort: 18443,
+            status: 'initialized',
+            dataDir: this.stateController.getNodeDataDir(nodeName),
+        };
+        this.nodeController.createNode(newNode);
+        this.nodes.push(newNode);
+        this.stateController.saveState(this.nodes);
     }
 
     public async startNode(nodeName: string) {
@@ -119,15 +128,7 @@ export class NetworkController {
             return node;
         });
         for(const targetNode of targetNodes) {
-            if(sourceNode.outboundConnections.includes(targetNode.name) || 
-                sourceNode.inboundConnections.includes(targetNode.name)) {
-                console.log(`Nodes ${sourceNode.name} and ${targetNode.name} are already connected`);
-                continue;
-            }
             await this.nodeController.connectNode(sourceNode, targetNode);
-            sourceNode.outboundConnections.push(targetNode.name);
-            targetNode.inboundConnections.push(sourceNode.name);
-            this.stateController.saveState(this.nodes);
         }
     }
 
