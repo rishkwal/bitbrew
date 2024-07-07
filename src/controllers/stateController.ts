@@ -34,6 +34,17 @@ export class StateController{
         fs.mkdirSync(this.paths.log, { recursive: true });
     }
 
+    public setNodeStatus(nodeName: string, status: NodeConfig['status']) {
+        const nodes = this.loadState();
+        if(nodes) {
+            const node = nodes.find(n => n.name === nodeName);
+            if(node) {
+                node.status = status;
+                this.saveState(nodes);
+            }
+        }
+    }
+
     public saveState(nodes: NodeConfig[]) {
         if (!fs.existsSync(this.paths.data)) {
             this.createPaths();

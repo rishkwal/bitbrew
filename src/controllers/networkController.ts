@@ -27,6 +27,7 @@ export class NetworkController {
                 name: `node-${i}`,
                 port: 18444,
                 rpcPort: 18443,
+                status: 'initialized',
                 dataDir: this.stateController.getNodeDataDir(`node-${i}`),
                 inboundConnections: [],
                 outboundConnections: [],
@@ -80,6 +81,7 @@ export class NetworkController {
 
             return {
                 name: node.name,
+                status: node.status,
                 inbound: truncateConnections(node.inboundConnections),
                 outbound: truncateConnections(node.outboundConnections),
             };

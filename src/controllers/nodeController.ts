@@ -1,12 +1,15 @@
 import * as fs from 'fs';
 import { NodeConfig } from './types.js';
 import { DockerController } from './dockerController.js';
+import { StateController } from './stateController.js';
 
 export class NodeController {
     private readonly dockerController: DockerController;
+    private readonly stateController: StateController;
 
     constructor() {
         this.dockerController = new DockerController();
+        this.stateController = new StateController();
     }
 
     async createNode(node: NodeConfig): Promise<void> {
@@ -43,6 +46,7 @@ export class NodeController {
                 NetworkMode: 'bitcoin-regtest',
             }
         });
+        this.stateController.setNodeStatus(node.name, 'stopped');
     }
 
     async startNode(node: NodeConfig): Promise<void> {
@@ -53,6 +57,7 @@ export class NodeController {
         }
         try {
             await container.start();
+            this.stateController.setNodeStatus(node.name, 'running');
             console.log(`Started node ${node.name}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -70,6 +75,7 @@ export class NodeController {
             return;
         }
         await container.stop();
+        this.stateController.setNodeStatus(node.name, 'stopped');
         console.log(`Stopped node ${node.name}`);
     }
 
