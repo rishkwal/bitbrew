@@ -103,16 +103,14 @@ export class NodeController {
         throw new Error(`Timeout waiting for node ${node.name} to be ready`)
     }
 
-    async connectNodes(sourceNode: NodeConfig, targetNodes: NodeConfig[]): Promise<void> {
-        for (const targetNode of targetNodes) {
-            const container = this.dockerController.getContainer(sourceNode.name);
-            await container.exec({
-                AttachStdout: true,
-                AttachStderr: true,
-                Cmd: ['bitcoin-cli', 'addnode', targetNode.name, 'add'],
-            }).then((exec) => exec.start({ hijack: true, stdin: true }));
-            // TODO: Check if the connection was successful
-            console.log(`Connected ${sourceNode.name} to ${targetNode.name}`);
-        }
+    async connectNode(sourceNode: NodeConfig, targetNode: NodeConfig) {
+        const container = this.dockerController.getContainer(sourceNode.name);
+        await container.exec({
+            AttachStdout: true,
+            AttachStderr: true,
+            Cmd: ['bitcoin-cli', 'addnode', targetNode.name, 'add'],
+        }).then((exec) => exec.start({ hijack: true, stdin: true }));
+        //TODO: Check if the connection was successful
+        console.log(`Connected ${sourceNode.name} to ${targetNode.name}`);
     }
 }

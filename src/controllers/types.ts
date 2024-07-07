@@ -3,8 +3,8 @@ export interface NodeConfig {
     port: number;
     rpcPort: number;
     dataDir: string;
-    outboundConnections?: string[];
-    inboundConnections?: string[];
+    outboundConnections: string[];
+    inboundConnections: string[];
 }
 
 export interface NetworkState {
