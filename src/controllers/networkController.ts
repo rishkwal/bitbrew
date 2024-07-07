@@ -81,6 +81,7 @@ export class NetworkController {
 
             return {
                 name: node.name,
+                status: node.status,
                 inbound: truncateConnections(node.inboundConnections),
                 outbound: truncateConnections(node.outboundConnections),
             };
