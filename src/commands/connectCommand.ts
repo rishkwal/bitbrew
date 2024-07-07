@@ -9,6 +9,14 @@ export const ConnectCommand = new Command()
     .action(async (sourceNode, targetNodes) => {
         console.log('Connecting nodes...');
         const network = new NetworkController();
-        await network.connectNodes(sourceNode, targetNodes);
+        try {
+            await network.connectNodes(sourceNode, targetNodes);
+        } catch(err) {
+            if(err instanceof Error)
+                console.error(err.message)
+            else
+                console.error(err);
+            return;
+        }
         console.log('Nodes connected');
     });

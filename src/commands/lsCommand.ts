@@ -6,5 +6,12 @@ export const LsCommand = new Command()
     .description('List your network nodes')
     .action(() => {
         const network = new NetworkController();
-        network.listNodes();
+        try {
+            network.listNodes();
+        } catch (err) {
+            if(err instanceof Error)
+                console.error(err.message)
+            else
+                console.error(err);
+        }
     });

@@ -18,6 +18,13 @@ export const StartCommand = new Command()
         }
         for (const node of nodes) {
             console.log(`Starting node ${node}...`);
-            await network.startNode(node);
+            try {
+                await network.startNode(node);
+            } catch (err) {
+                if(err instanceof Error)
+                    console.error(err.message)
+                else
+                    console.error(err);
+            }
         }
     });

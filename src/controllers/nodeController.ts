@@ -80,9 +80,6 @@ export class NodeController {
     }
 
     async waitForNodeReady(node: NodeConfig, maxRetries = 30, retryInterval=2000): Promise<void> {
-        if(node.status !== 'running') {
-            throw new Error(`Node ${node.name} is not running`);
-        }
         console.log(`Waiting for node ${node.name} to be ready...`);
         for (let i = 0; i < maxRetries; i++) {
             try {

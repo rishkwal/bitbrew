@@ -15,6 +15,13 @@ export const StopCommand = new Command()
         }
         for (const node of nodes) {
             console.log(`Stopping node ${node}...`);
-            await network.stopNode(node);
+            try {
+                await network.stopNode(node);
+            } catch (err) {
+                if(err instanceof Error)
+                    console.error(err.message)
+                else
+                    console.error(err);
+            }
         }
     });
