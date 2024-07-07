@@ -88,6 +88,25 @@ export class NetworkController {
         }));
     }
 
+    public async addNode(nodeName: string) {
+        if(this.nodes.find((node) => node.name === nodeName)) {
+            console.log(`Node ${nodeName} already exists`);
+            return;
+        }
+        const newNode: NodeConfig = {
+            name: nodeName,
+            port: 18444,
+            rpcPort: 18443,
+            status: 'initialized',
+            dataDir: this.stateController.getNodeDataDir(nodeName),
+            inboundConnections: [],
+            outboundConnections: [],
+        };
+        this.nodeController.createNode(newNode);
+        this.nodes.push(newNode);
+        this.stateController.saveState(this.nodes);
+    }
+
     public async startNode(nodeName: string) {
         const node = this.nodes.find((node) => node.name === nodeName);
         if(node === undefined) {
