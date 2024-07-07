@@ -4,7 +4,7 @@ import { DockerController } from './dockerController.js';
 import { NodeController } from './nodeController.js';
 
 export class NetworkController {
-    private nodes: NodeConfig[] = [];
+    public nodes: NodeConfig[] = [];
     private stateController: StateController;
     private dockerController: DockerController;
     private nodeController: NodeController;
