@@ -4,8 +4,17 @@ import { NetworkController } from "../controllers/networkController.js";
 export const StopCommand = new Command()
     .name('stop')
     .description('Stop your Bitcoin test network')
-    .action(() => {
+    .argument('[node...]', 'Nodes to stop')
+    .option('-a, --all', 'Stop all nodes')
+    .action(async (nodes) => {
         const network = new NetworkController();
-        network.stopNetwork();
-        console.log('Stopping your Bitcoin network...');
+        if (StopCommand.opts().all) {
+            nodes = network.nodes.map(node => node.name);
+        } else {
+            console.log('Please specify nodes to stop');
+        }
+        for (const node of nodes) {
+            console.log(`Stopping node ${node}...`);
+            await network.stopNode(node);
+        }
     });

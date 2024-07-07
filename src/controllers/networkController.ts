@@ -86,6 +86,15 @@ export class NetworkController {
         await this.nodeController.startNode(node);
     }
 
+    public async stopNode(nodeName: string) {
+        const node = this.nodes.find((node) => node.name === nodeName);
+        if(node === undefined) {
+            console.log(`Node ${nodeName} not found`);
+            return;
+        }
+        await this.nodeController.stopNode(node);
+    }
+
     public async connectNodes(sourceNodeName: string, targetNodeNames: string[]) {
         const sourceNode = this.nodes.find((node) => node.name === sourceNodeName);
         if(!sourceNode) {
@@ -99,12 +108,6 @@ export class NetworkController {
             return node;
         });
         await this.nodeController.connectNodes(sourceNode, targetNodes);
-    }
-
-    async stopNetwork() {
-        for (const node of this.nodes) {
-            await this.nodeController.stopNode(node);
-        }
     }
 
     async cleanNetwork() {
