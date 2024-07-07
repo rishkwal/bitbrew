@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { NetworkController } from '../controllers/networkController.js';
 
 export const RemoveCommand = new Command()
     .name('remove')
@@ -6,4 +7,13 @@ export const RemoveCommand = new Command()
     .argument('<node>', 'Node to remove')
     .action(async (node) => {
         console.log(`Removing node ${node}...`);
+        const network = new NetworkController();
+        try {
+            await network.removeNode(node);
+        } catch (err) {
+            if(err instanceof Error)
+                console.error(err.message)
+            else
+                console.error(err);
+        }
     });

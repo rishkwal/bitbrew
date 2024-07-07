@@ -68,6 +68,21 @@ export class NodeController {
         }
     }
 
+    async removeNode(node: NodeConfig): Promise<void> {
+        const container = this.dockerController.getContainer(node.name);
+        try {
+            await container.remove({ force: true });
+            this.stateController.removeNode(node.name);
+            console.log(`Removed node ${node.name}`);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+            } else {
+                console.error(`Unknown error removing node ${node.name}`);
+            }
+        }
+    }
+
     async stopNode(node: NodeConfig): Promise<void> {
         const container = this.dockerController.getContainer(node.name);
         if((await container.inspect()).State.Running === false){
