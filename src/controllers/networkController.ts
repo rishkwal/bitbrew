@@ -28,6 +28,8 @@ export class NetworkController {
                 port: 18444,
                 rpcPort: 18443,
                 dataDir: this.stateController.getNodeDataDir(`node-${i}`),
+                inboundConnections: [],
+                outboundConnections: [],
             });
         }
         this.stateController.saveState(this.nodes);
@@ -69,10 +71,17 @@ export class NetworkController {
             return;
         }
         console.table(this.nodes.map((node: NodeConfig) => {
+            const truncateConnections = (connections: string[]) => {
+                if (connections.length > 1) {
+                    return connections.slice(0, 1).join(', ') + `, ... (${connections.length - 1} more)`;
+                }
+                return connections.join(', ');
+            };
+
             return {
                 name: node.name,
-                port: node.port,
-                rpcPort: node.rpcPort,
+                inbound: truncateConnections(node.inboundConnections),
+                outbound: truncateConnections(node.outboundConnections),
             };
         }));
     }
@@ -108,7 +117,15 @@ export class NetworkController {
             return node;
         });
         for(const targetNode of targetNodes) {
+            if(sourceNode.outboundConnections.includes(targetNode.name) || 
+                sourceNode.inboundConnections.includes(targetNode.name)) {
+                console.log(`Nodes ${sourceNode.name} and ${targetNode.name} are already connected`);
+                continue;
+            }
             await this.nodeController.connectNode(sourceNode, targetNode);
+            sourceNode.outboundConnections.push(targetNode.name);
+            targetNode.inboundConnections.push(sourceNode.name);
+            this.stateController.saveState(this.nodes);
         }
     }
 
