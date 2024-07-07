@@ -47,6 +47,10 @@ export class NodeController {
 
     async startNode(node: NodeConfig): Promise<void> {
         const container = this.dockerController.getContainer(node.name);
+        if((await container.inspect()).State.Running === true){
+            console.log(`Node ${node.name} is already running`);
+            return;
+        }
         try {
             await container.start();
             console.log(`Started node ${node.name}`);
@@ -54,13 +58,17 @@ export class NodeController {
             if (error instanceof Error) {
                 console.error(error.message);
             } else {
-                console.error('Unknown error starting node ${node.name}');
+                console.error(`Unknown error starting node ${node.name}`);
             }
         }
     }
 
     async stopNode(node: NodeConfig): Promise<void> {
         const container = this.dockerController.getContainer(node.name);
+        if((await container.inspect()).State.Running === false){
+            console.log(`Node ${node.name} is already stopped`);
+            return;
+        }
         await container.stop();
         console.log(`Stopped node ${node.name}`);
     }

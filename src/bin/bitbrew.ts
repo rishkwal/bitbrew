@@ -5,7 +5,8 @@ import { BrewCommand,
         CleanCommand, 
         ConnectCommand,
         StopCommand,
-        LsCommand
+        LsCommand,
+        StartCommand
       } from '../commands/index.js';
 
 const program: Command = new Command();
@@ -27,5 +28,6 @@ program.addCommand(CleanCommand);
 program.addCommand(ConnectCommand);
 program.addCommand(StopCommand);
 program.addCommand(LsCommand);
+program.addCommand(StartCommand);
 
 program.parse(process.argv);
