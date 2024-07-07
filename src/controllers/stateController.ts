@@ -35,12 +35,12 @@ export class StateController{
     }
 
     public setNodeStatus(nodeName: string, status: NodeConfig['status']) {
-        const nodes = this.loadState();
-        if(nodes) {
-            const node = nodes.find(n => n.name === nodeName);
+        const state = this.loadState();
+        if(state && state.nodes) {
+            const node = state.nodes.find(n => n.name === nodeName);
             if(node) {
                 node.status = status;
-                this.saveState(nodes);
+                this.saveState(state.nodes);
             }
         }
     }
@@ -49,14 +49,14 @@ export class StateController{
         if (!fs.existsSync(this.paths.data)) {
             this.createPaths();
         }
-        const state: NetworkState = { nodes };
+        const state: NetworkState = { nodes, exist: true };
         fs.writeFileSync(this.getStateFile(), JSON.stringify(state, null, 2));
     }
 
-    public loadState(): NodeConfig[] | null {
+    public loadState(): NetworkState | null{
         if(fs.existsSync(this.getStateFile())) {
             const state: NetworkState = JSON.parse(fs.readFileSync(this.getStateFile(), 'utf-8'));
-            return state.nodes;
+            return state;
         }
         return null;
     }

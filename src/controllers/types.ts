@@ -10,4 +10,5 @@ export interface NodeConfig {
 
 export interface NetworkState {
     nodes: NodeConfig[];
+    exist: boolean;
 }

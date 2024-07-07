@@ -1,10 +1,11 @@
-import { NodeConfig } from './types';
+import { NetworkState, NodeConfig } from './types';
 import { StateController } from './stateController.js';
 import { DockerController } from './dockerController.js';
 import { NodeController } from './nodeController.js';
 
 export class NetworkController {
     public nodes: NodeConfig[] = [];
+    public exist: boolean = false;
     private stateController: StateController;
     private dockerController: DockerController;
     private nodeController: NodeController;
@@ -42,9 +43,10 @@ export class NetworkController {
     }
 
     private loadState(): boolean {
-        const loadedNodes = this.stateController.loadState();
-        if (loadedNodes) {
-            this.nodes = loadedNodes;
+        const state: NetworkState | null = this.stateController.loadState();
+        if (state) {
+            this.nodes = state.nodes;
+            this.exist = state.exist;
             return true;
         }
         return false;

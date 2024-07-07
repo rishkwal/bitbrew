@@ -7,6 +7,10 @@ export const AddCommand = new Command()
     .argument('<name>', 'Name of the node to add')
     .action(async (name) => {
         const network = new NetworkController();
+        if(!network.exist) {
+            console.log('Please create a network first using `bitbrew brew` command');
+            return;
+        }
         console.log(`Adding node ${name}...`);
         try {
             await network.addNode(name);
