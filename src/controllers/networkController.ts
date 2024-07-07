@@ -56,7 +56,7 @@ export class NetworkController {
 
     public async startNetwork() {
         console.log('Creating network...');
-        await this.dockerController.createNetwork('bitcoin-regtest');
+        await this.dockerController.createNetwork('bitbrew');
         for(const node of this.nodes) {
             await this.nodeController.createNode(node);
             await this.nodeController.startNode(node);
@@ -145,7 +145,7 @@ export class NetworkController {
                 }
             }
         }
-        await this.dockerController.removeNetwork('bitcoin-regtest');
+        await this.dockerController.removeNetwork('bitbrew');
         this.stateController.deleteAllNodes();
     }
 }

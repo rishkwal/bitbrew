@@ -38,12 +38,12 @@ export class NodeController {
             name: node.name,
             NetworkingConfig: {
                 EndpointsConfig: {
-                    'bitcoin-regtest': {}
+                    'bitbrew': {}
                 }
             },
             HostConfig: {
                 Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`],
-                NetworkMode: 'bitcoin-regtest',
+                NetworkMode: 'bitbrew',
             }
         });
         this.stateController.setNodeStatus(node.name, 'stopped');
