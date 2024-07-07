@@ -107,7 +107,9 @@ export class NetworkController {
             }
             return node;
         });
-        await this.nodeController.connectNodes(sourceNode, targetNodes);
+        for(const targetNode of targetNodes) {
+            await this.nodeController.connectNode(sourceNode, targetNode);
+        }
     }
 
     async cleanNetwork() {
