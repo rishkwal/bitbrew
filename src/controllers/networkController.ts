@@ -106,6 +106,15 @@ export class NetworkController {
         await this.nodeController.startNode(node);
     }
 
+    public async attachToNode(nodeName: string) {
+        const node = this.nodes.find((node) => node.name === nodeName);
+        if(node === undefined) {
+            console.log(`Node ${nodeName} not found`);
+            return;
+        }
+        await this.dockerController.attachToContainer(node.name);
+    }
+
     public async stopNode(nodeName: string) {
         const node = this.nodes.find((node) => node.name === nodeName);
         if(node === undefined) {

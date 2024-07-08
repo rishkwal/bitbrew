@@ -1,4 +1,5 @@
 import Dockerode from "dockerode";
+import { spawn } from "child_process";
 
 export class DockerController {
     docker: Dockerode;
@@ -44,6 +45,20 @@ export class DockerController {
 
     getContainer(name: string) {
         return this.docker.getContainer(name);
+    }
+
+    attachToContainer(name: string) {
+        const dockerProcess = spawn('docker', ['exec', '-it', name, 'sh'], {
+          stdio: 'inherit'
+        });
+      
+        dockerProcess.on('close', (code) => {
+          console.log(`Docker process exited with code ${code}`);
+        });
+      
+        dockerProcess.on('error', (err) => {
+          console.error('Failed to start docker process:', err);
+        });
     }
 
     async removeNetwork(name: string) {
