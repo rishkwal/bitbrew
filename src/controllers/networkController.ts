@@ -106,13 +106,23 @@ export class NetworkController {
         await this.nodeController.startNode(node);
     }
 
+    public execNodeCommand(nodeName: string, command: string) {
+        const node = this.nodes.find((node) => node.name === nodeName);
+        if(node === undefined) {
+            console.log(`Node ${nodeName} not found`);
+            return;
+        }
+        command = 'bitcoin-cli ' + command;
+        this.dockerController.execCommand(nodeName, command);
+    }
+
     public async attachToNode(nodeName: string) {
         const node = this.nodes.find((node) => node.name === nodeName);
         if(node === undefined) {
             console.log(`Node ${nodeName} not found`);
             return;
         }
-        await this.dockerController.attachToContainer(node.name);
+        this.dockerController.attachToContainer(node.name);
     }
 
     public async stopNode(nodeName: string) {

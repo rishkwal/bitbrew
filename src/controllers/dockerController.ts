@@ -47,6 +47,20 @@ export class DockerController {
         return this.docker.getContainer(name);
     }
 
+    public execCommand(containerName: string, command: string) {
+        const dockerProcess = spawn('docker', ['exec', '-it', containerName, 'sh', '-c', command], {
+          stdio: 'inherit'
+        });
+      
+        dockerProcess.on('close', (code) => {
+          console.log(`Docker process exited with code ${code}`);
+        });
+      
+        dockerProcess.on('error', (err) => {
+          console.error('Failed to start docker process:', err);
+        });
+    }
+
     attachToContainer(name: string) {
         const dockerProcess = spawn('docker', ['exec', '-it', name, 'sh'], {
           stdio: 'inherit'

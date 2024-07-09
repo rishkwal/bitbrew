@@ -9,6 +9,7 @@ import { BrewCommand,
         StartCommand,
         AddCommand,
         RemoveCommand,
+        ExecCommand,
         AttachCommand
       } from '../commands/index.js';
 
@@ -34,6 +35,7 @@ program.addCommand(StopCommand);
 program.addCommand(AddCommand);
 program.addCommand(CleanCommand);
 program.addCommand(RemoveCommand);
+program.addCommand(ExecCommand);
 program.addCommand(AttachCommand);
 
 program.parse(process.argv);
