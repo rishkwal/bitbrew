@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { NetworkController } from '../controllers/networkController.js';
+import NetworkController from '../controllers/networkController.js';
 
 export const StartCommand = new Command()
     .name('start')
@@ -7,7 +7,7 @@ export const StartCommand = new Command()
     .argument('[node...]', 'Nodes to start')
     .option('-a, --all', 'Start all nodes')
     .action( async (nodes) => {
-        const network = new NetworkController();
+        const network = NetworkController;
         if (nodes.length === 0) {
             if (StartCommand.opts().all) {
                 nodes = network.nodes.map(node => node.name);

@@ -5,7 +5,7 @@ export const LsCommand = new Command()
     .name('ls')
     .description('List your network nodes')
     .action(() => {
-        const network = new NetworkController();
+        const network = NetworkController;
         try {
             network.listNodes();
         } catch (err) {

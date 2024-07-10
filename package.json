@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "build": "npx tsc"
   },
   "keywords": [],
@@ -27,6 +27,8 @@
     "@types/node": "^20.14.9",
     "pino-pretty": "^11.2.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^2.0.1"
   }
 }

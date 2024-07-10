@@ -1,15 +1,13 @@
 import * as fs from 'fs';
-import { NodeConfig } from './types.js';
-import { DockerController } from './dockerController.js';
-import { StateController } from './stateController.js';
+import { NodeConfig, IDockerController, IStateController } from './types.js';
 
 export class NodeController {
-    private readonly dockerController: DockerController;
-    private readonly stateController: StateController;
+    private readonly dockerController: IDockerController;
+    private readonly stateController: IStateController;
 
-    constructor() {
-        this.dockerController = new DockerController();
-        this.stateController = new StateController();
+    constructor(dockerController: IDockerController, stateController: IStateController) {
+        this.dockerController = dockerController;
+        this.stateController = stateController;
     }
 
     async createNode(node: NodeConfig): Promise<void> {
@@ -107,7 +105,7 @@ export class NodeController {
                 const stream = await exec.start({ hijack: true, stdin: true });
                 const output = await new Promise<string>((resolve, reject) => {
                     let data = '';
-                    stream.on('data', (chunk) => {
+                    stream.on('data', (chunk: any) => {
                         data += chunk.toString();
                     });
                     stream.on('end', () => resolve(data));
@@ -130,7 +128,7 @@ export class NodeController {
             AttachStdout: true,
             AttachStderr: true,
             Cmd: ['bitcoin-cli', 'addnode', targetNode.name, 'add'],
-        }).then((exec) => exec.start({ hijack: true, stdin: true }));
+        }).then((exec: any) => exec.start({ hijack: true, stdin: true }));
         //TODO: Check if the connection was successful
         console.log(`Connected ${sourceNode.name} to ${targetNode.name}`);
     }
