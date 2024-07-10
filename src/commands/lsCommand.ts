@@ -1,17 +1,9 @@
 import { Command } from "commander";
-import NetworkController from "../controllers/networkController.js";
+import { lsAction } from "../actions/index.js";
 
 export const LsCommand = new Command()
     .name('ls')
     .description('List your network nodes')
     .action(() => {
-        const network = NetworkController;
-        try {
-            network.listNodes();
-        } catch (err) {
-            if(err instanceof Error)
-                console.error(err.message)
-            else
-                console.error(err);
-        }
+        lsAction();
     });
