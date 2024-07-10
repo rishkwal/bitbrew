@@ -18,8 +18,7 @@ export class NetworkController {
     }
 
     public initializeNodes(numberOfNodes: number): boolean {
-        this.stateController.loadState();// replace with if(this.loadState())
-        if(this.nodes.length > 0) {
+        if(this.loadState()) {
             console.log('A network already exists. Use `bitbrew start` to start the network.');
             return false;
         }
