@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import attachAction from "../actions/attachAction.js";
+import { attachAction } from "../actions/index.js";
 
 export const AttachCommand =  new Command()
     .name("attach")

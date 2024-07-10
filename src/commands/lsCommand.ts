@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import lsAction from "../actions/lsAction.js";
+import { lsAction } from "../actions/index.js";
 
 export const LsCommand = new Command()
     .name('ls')

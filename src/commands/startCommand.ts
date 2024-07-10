@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import startAction from '../actions/startAction.js';
+import { startAction } from '../actions/index.js';
 
 export const StartCommand = new Command()
     .name('start')

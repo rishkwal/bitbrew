@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import stopAction from "../actions/stopAction.js";
+import { stopAction } from "../actions/index.js";
 
 export const StopCommand = new Command()
     .name('stop')

@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import brewAction from "../actions/brewAction.js";
+import { brewAction } from "../actions/index.js";
 
 export const BrewCommand = new Command()
     .name('brew')

@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import connectAction from '../actions/connectAction.js'
+import { connectAction } from '../actions/index.js'
 
 export const ConnectCommand = new Command()
     .name('connect')

@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import execAction from '../actions/execAction.js';
+import { execAction } from '../actions/index.js';
 
 export const ExecCommand = new Command("exec")
   .description("Execute a command")

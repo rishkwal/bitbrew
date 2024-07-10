@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import cleanAction from "../actions/cleanAction.js";
+import { cleanAction } from "../actions/index.js";
 
 export const CleanCommand = new Command()
     .name('clean')

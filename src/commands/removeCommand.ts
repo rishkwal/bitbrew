@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import removeAction from '../actions/removeAction.js';
+import { removeAction } from '../actions/index.js';
 
 export const RemoveCommand = new Command()
     .name('remove')
