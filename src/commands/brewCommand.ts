@@ -13,7 +13,7 @@ export const BrewCommand = new Command()
             verticalLayout: 'default'
           }));
         console.log('Brewing your Bitcoin network with', options.nodes, 'nodes...');
-        const network = new NetworkController();
+        const network = NetworkController;
         try {
           network.createPaths();
           network.initializeNodes(parseInt(options.nodes));

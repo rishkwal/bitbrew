@@ -8,7 +8,7 @@ export const ConnectCommand = new Command()
     .argument('<target-node...>', 'Target nodes to connect')
     .action(async (sourceNode, targetNodes) => {
         console.log('Connecting nodes...');
-        const network = new NetworkController();
+        const network = NetworkController;
         try {
             await network.connectNodes(sourceNode, targetNodes);
         } catch(err) {

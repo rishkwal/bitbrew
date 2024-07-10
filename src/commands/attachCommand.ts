@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { NetworkController } from "../controllers/networkController.js";
+import NetworkController from "../controllers/networkController.js";
 
 export const AttachCommand =  new Command()
     .name("attach")
@@ -7,6 +7,6 @@ export const AttachCommand =  new Command()
     .argument("<node>", "Node to attach to")
     .action((nodeName) => {
         console.log("Attaching to node...");
-        const networkController = new NetworkController();
+        const networkController = NetworkController;
         networkController.attachToNode(nodeName);
     });

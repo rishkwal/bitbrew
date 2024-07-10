@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { NetworkController } from "../controllers/networkController.js";
+import NetworkController from "../controllers/networkController.js";
 
 export const StopCommand = new Command()
     .name('stop')
@@ -7,7 +7,7 @@ export const StopCommand = new Command()
     .argument('[node...]', 'Nodes to stop')
     .option('-a, --all', 'Stop all nodes')
     .action(async (nodes) => {
-        const network = new NetworkController();
+        const network = NetworkController;
         if (StopCommand.opts().all) {
             nodes = network.nodes.map(node => node.name);
         } else {

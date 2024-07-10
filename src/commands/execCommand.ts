@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { NetworkController } from "../controllers/networkController.js";
+import NetworkController from "../controllers/networkController.js";
 
 export const ExecCommand = new Command("exec")
   .description("Execute a command")
@@ -7,7 +7,7 @@ export const ExecCommand = new Command("exec")
   .argument("<command>", "command to execute")
   .action(async (node, command) => {
     console.log("executing command");
-    const controller = new NetworkController();
+    const controller = NetworkController;
     try {
       await controller.execNodeCommand(node, command);
     } catch (err) {

@@ -1,4 +1,4 @@
-import { NetworkState, NodeConfig } from './types';
+import { NetworkState, NodeConfig, IDockerController, IStateController, INodeController } from './types';
 import { StateController } from './stateController.js';
 import { DockerController } from './dockerController.js';
 import { NodeController } from './nodeController.js';
@@ -6,19 +6,19 @@ import { NodeController } from './nodeController.js';
 export class NetworkController {
     public nodes: NodeConfig[] = [];
     public exist: boolean = false;
-    private stateController: StateController;
-    private dockerController: DockerController;
-    private nodeController: NodeController;
+    private stateController: IStateController;
+    private dockerController: IDockerController;
+    private nodeController: INodeController;
 
-    constructor() {
-        this.stateController = new StateController();
-        this.dockerController = new DockerController();
-        this.nodeController = new NodeController();
-        this.loadState();
+    constructor(StateController: IStateController, DockerController: IDockerController, NodeController: INodeController){
+        this.stateController = StateController;
+        this.dockerController = DockerController;
+        this.nodeController = NodeController;
+        this.exist = this.loadState();
     }
 
     public initializeNodes(numberOfNodes: number): boolean {
-        this.stateController.loadState();
+        this.stateController.loadState();// replace with if(this.loadState())
         if(this.nodes.length > 0) {
             console.log('A network already exists. Use `bitbrew start` to start the network.');
             return false;
@@ -44,9 +44,9 @@ export class NetworkController {
         const state: NetworkState | null = this.stateController.loadState();
         if (state) {
             this.nodes = state.nodes;
-            this.exist = state.exist;
             return true;
         }
+        this.nodes = [];
         return false;
     }
 
@@ -181,4 +181,9 @@ export class NetworkController {
     }
 }
 
-export default NetworkController;
+const stateController = new StateController();
+const dockerController = new DockerController();
+const nodeController = new NodeController(dockerController, stateController);
+const networkController = new NetworkController(stateController, dockerController, nodeController);
+
+export default networkController;
