@@ -2,7 +2,7 @@ import { IDockerController, IStateController, Wallet } from "./types.js";
 import { DockerController } from "./dockerController.js";
 import { StateController } from "./stateController.js";
 
-export class WalletController {
+class WalletController {
     private docker: IDockerController;
     private stateController: IStateController;
     public wallets: Wallet[] = [];
@@ -24,5 +24,7 @@ export class WalletController {
     }
 }
 
-const walletController = new WalletController(new DockerController(), new StateController());
-export default walletController;
+export const getWalletController = () => {
+    const walletController = new WalletController(new DockerController(), new StateController());
+    return walletController;
+}

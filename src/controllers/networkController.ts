@@ -176,14 +176,13 @@ export class NetworkController {
             }
         }
         await this.dockerController.removeNetwork('bitbrew');
-        this.stateController.deleteAllNodes();
-        this.stateController.deleteWallets();
+        this.stateController.deleteAllData();
     }
 }
 
-const stateController = new StateController();
-const dockerController = new DockerController();
-const nodeController = new NodeController(dockerController, stateController);
-const networkController = new NetworkController(stateController, dockerController, nodeController);
-
-export default networkController;
+export const getNetworkController = () => {
+    const stateController = new StateController();
+    const dockerController = new DockerController();
+    const nodeController = new NodeController(dockerController, stateController);
+    return new NetworkController(stateController, dockerController, nodeController);
+}
