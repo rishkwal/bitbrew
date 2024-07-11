@@ -62,7 +62,7 @@ export class DockerController {
     }
 
     attachToContainer(name: string) {
-        const dockerProcess = spawn('docker', ['exec', '-it', name, 'sh'], {
+        const dockerProcess = spawn('docker', ['exec', '-it', name, 'sh', '-c', `PS1='${name} $ ' sh`], {
           stdio: 'inherit'
         });
       
