@@ -177,6 +177,7 @@ export class NetworkController {
         }
         await this.dockerController.removeNetwork('bitbrew');
         this.stateController.deleteAllNodes();
+        this.stateController.deleteWallets();
     }
 }
 
