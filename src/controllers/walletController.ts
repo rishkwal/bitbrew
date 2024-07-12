@@ -22,6 +22,19 @@ class WalletController {
         this.docker.execCommand(node, `bitcoin-cli createwallet ${name}`);
         this.stateController.saveWallet(name, node);
     }
+
+    async listWallets() {
+        if(this.wallets.length === 0) {
+            console.log('No wallets found');
+            return;
+        }
+        console.table(this.wallets.map((wallet: Wallet) => {
+            return {
+                name: wallet.name,
+                node: wallet.node,
+            };
+        }));
+    }
 }
 
 export const getWalletController = () => {
