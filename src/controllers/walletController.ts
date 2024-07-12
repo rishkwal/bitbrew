@@ -44,6 +44,32 @@ class WalletController {
         }
         this.docker.execCommand(wallet.node, `bitcoin-cli -rpcwallet=${walletName} getbalances`);
     }
+
+    async transferBitcoin(fromWallet: string, toWallet: string, amount: number) {
+        const from = this.wallets.find((wallet) => wallet.name === fromWallet);
+        const to = this.wallets.find((wallet) => wallet.name === toWallet);
+        if(from === undefined || to === undefined) {
+            console.log(`Wallet ${fromWallet} or ${toWallet} not found`);
+            return;
+        }
+        const toAddress = await this.getAddress(toWallet);
+        if(toAddress === undefined) {
+            console.log('Error getting address');
+            return;
+        }
+        this.docker.execCommand(from.node, `bitcoin-cli -rpcwallet=${fromWallet} sendtoaddress ${toAddress} ${amount}`);
+    }
+
+    private async getAddress(walletName: string): Promise<string | undefined> {
+        const wallet = this.wallets.find((wallet) => wallet.name === walletName);
+        if(wallet === undefined) {
+            console.log(`Wallet ${walletName} not found`);
+            return;
+        }
+        const address = await this.docker.getExecOutput(wallet.node, `bitcoin-cli -rpcwallet=${walletName} getnewaddress`);
+        // Remove new line characters
+        return address.replace(/(\r\n|\n|\r)/gm, "");
+    }
 }
 
 export const getWalletController = () => {

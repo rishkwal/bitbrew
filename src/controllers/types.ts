@@ -35,6 +35,7 @@ export interface IDockerController {
     createNetwork(name: string): Promise<void>;
     removeNetwork(name: string): Promise<void>;
     execCommand(containerName: string, command: string): void;
+    getExecOutput(containerName: string, command: string): Promise<string>;
     attachToContainer(containerName: string): void;
     getContainer(containerName: string): any;
     pullImage(imageName: string): Promise<void>;

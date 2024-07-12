@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { getWalletController } from '../controllers/walletController.js';
 
 export const SendCommand = new Command('send')
     .description('Transfer funds between wallets')
@@ -10,5 +11,6 @@ export const SendCommand = new Command('send')
             console.error('Amount must be a number');
             process.exit(1);
         }
-        console.log(`Sending ${amount} bitcoin from ${from} to ${to}`);
+        const walletController = getWalletController();
+        walletController.transferBitcoin(from, to, Number(amount));
     });
