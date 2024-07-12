@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { CreateCommand } from './wallet/createCommand.js';
 import { LsCommand } from "./wallet/lsCommand.js";
+import { BalanceCommand } from "./wallet/balanceCommand.js";
 
 const WalletCommand = new Command('wallet')
     .description('Manage wallets')
@@ -13,5 +14,6 @@ const WalletCommand = new Command('wallet')
 
 WalletCommand.addCommand(CreateCommand);
 WalletCommand.addCommand(LsCommand);
+WalletCommand.addCommand(BalanceCommand);
 
 export { WalletCommand };
