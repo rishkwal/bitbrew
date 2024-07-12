@@ -35,6 +35,15 @@ class WalletController {
             };
         }));
     }
+
+    async getBalance(walletName: string) {
+        const wallet = this.wallets.find((wallet) => wallet.name === walletName);
+        if(wallet === undefined) {
+            console.log(`Wallet ${walletName} not found`);
+            return;
+        }
+        this.docker.execCommand(wallet.node, `bitcoin-cli -rpcwallet=${walletName} getbalances`);
+    }
 }
 
 export const getWalletController = () => {
