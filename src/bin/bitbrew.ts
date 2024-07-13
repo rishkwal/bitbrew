@@ -12,7 +12,8 @@ import { BrewCommand,
         ExecCommand,
         AttachCommand,
         WalletCommand,
-        SendCommand
+        SendCommand,
+        MineCommand
       } from '../commands/index.js';
 
 const program: Command = new Command();
@@ -41,5 +42,6 @@ program.addCommand(ExecCommand);
 program.addCommand(AttachCommand);
 program.addCommand(WalletCommand);
 program.addCommand(SendCommand);
+program.addCommand(MineCommand);
 
 program.parse(process.argv);
