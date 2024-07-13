@@ -111,7 +111,7 @@ class WalletController {
     }
 
     public async mineBlocks(walletName: string, blocks: number) {
-        clilog.info(`Mining a new block and sending reward to ${walletName}`);
+        clilog.info(`Mining ${blocks} block(s) and sending reward to ${walletName}`);
         const wallet = this.wallets.find((wallet) => wallet.name === walletName);
         if(wallet === undefined) {
             throw new Error(`Wallet ${walletName} not found`);
