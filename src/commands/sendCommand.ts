@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { getWalletController } from '../controllers/walletController.js';
+import { sendAction } from '../actions/index.js';
 
 export const SendCommand = new Command('send')
     .description('Transfer funds between wallets')
@@ -7,10 +7,5 @@ export const SendCommand = new Command('send')
     .argument('<to>', 'Name of the wallet to send funds to')
     .argument('<amount>', 'Amount to send in bitcoin')
     .action((from, to, amount) => {
-        if (isNaN(amount)) {
-            console.error('Amount must be a number');
-            process.exit(1);
-        }
-        const walletController = getWalletController();
-        walletController.transferBitcoin(from, to, Number(amount));
+        sendAction(from, to, amount);  
     });
