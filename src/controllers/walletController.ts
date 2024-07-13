@@ -1,6 +1,7 @@
 import { IDockerController, IStateController, Wallet } from "./types.js";
 import { DockerController } from "./dockerController.js";
 import { StateController } from "./stateController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 class WalletController {
     private docker: IDockerController;
@@ -18,15 +19,22 @@ class WalletController {
     }
 
     async createWallet(name: string, node: string) {
-        console.log('Creating wallet...');
+        clilog.info('Creating wallet...');
+        try{
         this.docker.execCommand(node, `bitcoin-cli createwallet ${name}`);
         this.stateController.saveWallet(name, node);
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            } else {
+                throw new Error('Unknown error creating wallet');
+            }
+        }
     }
 
     async listWallets() {
         if(this.wallets.length === 0) {
-            console.log('No wallets found');
-            return;
+            throw new Error('No wallets found');
         }
         console.table(this.wallets.map((wallet: Wallet) => {
             return {
@@ -37,34 +45,48 @@ class WalletController {
     }
 
     async getBalance(walletName: string) {
+        clilog.info(`Getting balance for wallet: ${walletName}...`);
         const wallet = this.wallets.find((wallet) => wallet.name === walletName);
         if(wallet === undefined) {
-            console.log(`Wallet ${walletName} not found`);
-            return;
+            throw new Error(`Wallet ${walletName} not found`);
         }
-        this.docker.execCommand(wallet.node, `bitcoin-cli -rpcwallet=${walletName} getbalances`);
+        try {
+            await this.loadWallet(walletName);
+            this.docker.execCommand(wallet.node, `bitcoin-cli -rpcwallet=${walletName} getbalances`);
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            } else {
+                throw new Error('Unknown error getting balance');
+            }
+        }
     }
 
     async transferBitcoin(fromWallet: string, toWallet: string, amount: number) {
         const from = this.wallets.find((wallet) => wallet.name === fromWallet);
         const to = this.wallets.find((wallet) => wallet.name === toWallet);
         if(from === undefined || to === undefined) {
-            console.log(`Wallet ${fromWallet} or ${toWallet} not found`);
-            return;
+            throw new Error(`Wallet ${fromWallet} or ${toWallet} not found`);
         }
         const toAddress = await this.getAddress(toWallet);
         if(toAddress === undefined) {
-            console.log('Error getting address');
-            return;
+            throw new Error('Error getting address');
         }
-        this.docker.execCommand(from.node, `bitcoin-cli -rpcwallet=${fromWallet} sendtoaddress ${toAddress} ${amount}`);
+        try {
+         this.docker.execCommand(from.node, `bitcoin-cli -rpcwallet=${fromWallet} sendtoaddress ${toAddress} ${amount}`);
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            } else {
+                throw new Error('Unknown error transferring bitcoin');
+            }
+        }
     }
 
     private async loadWallet(walletName: string) {
         const wallet = this.wallets.find((wallet) => wallet.name === walletName);
         if(wallet === undefined) {
-            console.log(`Wallet ${walletName} not found`);
-            return;
+            throw new Error(`Wallet ${walletName} not found`);
         }
         try {
             await this.docker.getExecOutput(wallet.node, `bitcoin-cli -rpcwallet=${walletName} loadwallet ${walletName}`);
@@ -80,8 +102,7 @@ class WalletController {
     private async getAddress(walletName: string): Promise<string | undefined> {
         const wallet = this.wallets.find((wallet) => wallet.name === walletName);
         if(wallet === undefined) {
-            console.log(`Wallet ${walletName} not found`);
-            return;
+            throw new Error(`Wallet ${walletName} not found`);
         }
         await this.loadWallet(walletName);
         const address = await this.docker.getExecOutput(wallet.node, `bitcoin-cli -rpcwallet=${walletName} getnewaddress`);
@@ -90,13 +111,21 @@ class WalletController {
     }
 
     public async mineBlocks(walletName: string, blocks: number) {
+        clilog.info(`Mining a new block and sending reward to ${walletName}`);
         const wallet = this.wallets.find((wallet) => wallet.name === walletName);
         if(wallet === undefined) {
-            console.log(`Wallet ${walletName} not found`);
-            return;
+            throw new Error(`Wallet ${walletName} not found`);
         }
+        try {
         const address = await this.getAddress(walletName);
         this.docker.execCommand(wallet.node, `bitcoin-cli generatetoaddress ${blocks} ${address}`);
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            } else {
+                throw new Error(`Unknown error mining blocks`);
+            }
+        }
     }
 }
 

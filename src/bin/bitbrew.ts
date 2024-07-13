@@ -27,7 +27,7 @@ program
   })
 
 program.addHelpText('beforeAll', chalk.hex('F2A900')(figlet.textSync('BitBrew',{
-  font: 'ANSI Shadow',
+  font: 'Doom',
   horizontalLayout: 'default',
   verticalLayout: 'default'
 })));

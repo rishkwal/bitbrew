@@ -1,4 +1,5 @@
 import { getNetworkController } from "../controllers/networkController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 export default async function startAction(nodes: string[], options: {all: boolean}): Promise<void> {
     const network = getNetworkController();
@@ -6,19 +7,19 @@ export default async function startAction(nodes: string[], options: {all: boolea
         if (options.all) {
             nodes = network.nodes.map(node => node.name);
         } else {
-            console.log('Please specify nodes to start');
+            clilog.error('Please specify nodes to start');
             return;
         }
     }
     for (const node of nodes) {
-        console.log(`Starting node ${node}...`);
         try {
             await network.startNode(node);
         } catch (err) {
+            clilog.stopSpinner(false);
             if(err instanceof Error)
-                console.error(err.message)
+                clilog.error(err.message)
             else
-                console.error(err);
+                clilog.error(err as string);
         }
     }
 }

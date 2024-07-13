@@ -20,7 +20,7 @@ export class NodeController {
         const images = await this.dockerController.docker.listImages({ filters: { reference: [imageName] } });
 
         if (images.length === 0) {
-            console.log(`Image ${imageName} not found, Pulling from registry...`)
+            clilog.info(`Image ${imageName} not found, Pulling from registry...`)
             await this.dockerController.docker.pull(imageName);
         }
         // Check if the container already exists
@@ -53,8 +53,7 @@ export class NodeController {
     async startNode(node: NodeConfig): Promise<void> {
         const container = this.dockerController.getContainer(node.name);
         if((await container.inspect()).State.Running === true){
-            console.log(`Node ${node.name} is already running`);
-            return;
+            throw new Error(`Node ${node.name} is already running`);
         }
         try {
             clilog.startSpinner(`Starting node ${node.name}...`);
@@ -63,9 +62,9 @@ export class NodeController {
             clilog.stopSpinner(true, `Started node ${node.name}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error(error.message);
+                throw new Error(error.message);
             } else {
-                console.error(`Unknown error starting node ${node.name}`);
+                throw new Error(`Unknown error starting node ${node.name}`);
             }
         }
     }
@@ -75,12 +74,11 @@ export class NodeController {
         try {
             await container.remove({ force: true });
             this.stateController.removeNode(node.name);
-            console.log(`Removed node ${node.name}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error(error.message);
+                throw new Error(error.message);
             } else {
-                console.error(`Unknown error removing node ${node.name}`);
+                throw new Error(`Unknown error removing node ${node.name}`);
             }
         }
     }
@@ -88,12 +86,10 @@ export class NodeController {
     async stopNode(node: NodeConfig): Promise<void> {
         const container = this.dockerController.getContainer(node.name);
         if((await container.inspect()).State.Running === false){
-            console.log(`Node ${node.name} is already stopped`);
-            return;
+            throw new Error(`Node ${node.name} is already stopped`);
         }
         await container.stop();
         this.stateController.setNodeStatus(node.name, 'stopped');
-        console.log(`Stopped node ${node.name}`);
     }
 
     async waitForNodeReady(node: NodeConfig, maxRetries = 30, retryInterval=2000): Promise<void> {
@@ -134,6 +130,6 @@ export class NodeController {
             Cmd: ['bitcoin-cli', 'addnode', targetNode.name, 'add'],
         }).then((exec: any) => exec.start({ hijack: true, stdin: true }));
         //TODO: Check if the connection was successful
-        console.log(`Connected ${sourceNode.name} to ${targetNode.name}`);
+        clilog.success(`Connected ${sourceNode.name} to ${targetNode.name}`);
     }
 }

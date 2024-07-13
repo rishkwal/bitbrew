@@ -5,7 +5,7 @@ import { clilog } from "../utils/cliLogger.js";
 
 export default async function brewAction(options: { nodes: number }) {
     console.log(chalk.hex('F2A900')(figlet.textSync('BitBrew',{
-      font: 'ANSI Shadow',
+      font: 'Doom',
       horizontalLayout: 'default',
       verticalLayout: 'default'
     })));
@@ -16,9 +16,10 @@ export default async function brewAction(options: { nodes: number }) {
       network.initializeNodes(options.nodes);
       await network.startNetwork();
     } catch (err) {
+        clilog.stopSpinner(false);
         if(err instanceof Error)
-            console.error(err.message)
+            clilog.error(err.message)
         else
-            console.error(err);
+            clilog.error(err as string);
     }
 }

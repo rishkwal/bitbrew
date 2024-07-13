@@ -1,16 +1,16 @@
 import { getNetworkController } from "../controllers/networkController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 export default async function cleanAction(): Promise<void> {
-    console.log('Cleaning up your Bitcoin network...');
     const network = getNetworkController();
     try {
         await network.cleanNetwork();
     } catch (err) {
+        clilog.stopSpinner(false);
         if(err instanceof Error)
-            console.error(err.message)
+            clilog.error(err.message)
         else
-            console.error(err);
+            clilog.error(err as string);
     }
-    network.deleteState();
-    console.log('Bitcoin network cleaned up');
+    clilog.success('Bitcoin network cleaned up');
 }

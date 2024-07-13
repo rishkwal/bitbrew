@@ -1,7 +1,15 @@
 import { getWalletController } from "../controllers/walletController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 export default async function mineAction(wallet: string, number=1) {
-    console.log(`Mining a new block and sending reward to ${wallet}`);
     const walletController = getWalletController();
-    walletController.mineBlocks(wallet, Number(number));
+    try {
+    await walletController.mineBlocks(wallet, Number(number));
+    } catch(err) {
+        clilog.stopSpinner(false);
+        if(err instanceof Error)
+            clilog.error(err.message)
+        else
+            clilog.error(err as string);
+    }
 }
