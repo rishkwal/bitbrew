@@ -9,3 +9,4 @@ export { default as removeAction } from './removeAction.js';
 export { default as execAction } from './execAction.js';
 export { default as attachAction } from './attachAction.js';
 export { default as sendAction } from './sendAction.js';
+export { default as mineAction } from './mineAction.js';
