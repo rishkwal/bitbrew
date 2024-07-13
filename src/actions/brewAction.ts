@@ -1,4 +1,4 @@
-import networkController from "../controllers/networkController.js";
+import { getNetworkController } from "../controllers/networkController.js";
 import figlet from "figlet";
 
 export default async function brewAction(options: { nodes: number }) {
@@ -8,7 +8,7 @@ export default async function brewAction(options: { nodes: number }) {
         verticalLayout: 'default'
       }));
     console.log('Brewing your Bitcoin network with', options.nodes, 'nodes...');
-    const network = networkController;
+    const network = getNetworkController();
     try {
       network.createPaths();
       network.initializeNodes(options.nodes);

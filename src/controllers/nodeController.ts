@@ -40,7 +40,9 @@ export class NodeController {
                 }
             },
             HostConfig: {
-                Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`],
+                Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`,
+                        `${this.stateController.getWalletsDir()}:/home/bitcoin/.bitcoin/regtest/wallets`
+                ],
                 NetworkMode: 'bitbrew',
             }
         });

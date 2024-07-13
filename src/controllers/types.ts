@@ -12,14 +12,22 @@ export interface NetworkState {
     exist: boolean;
 }
 
+export interface Wallet {
+    name: string;
+    node: string;
+}
+
 export interface IStateController {
     loadState(): NetworkState | null;
     saveState(nodes: NodeConfig[]): void;
     createPaths(): void;
     deleteState(): void;
     getNodeDataDir(nodeName: string): string;
+    loadWallets(): Wallet[];
+    getWalletsDir(): string;
+    saveWallet(name: string, node: string): void;
     removeNode(nodeName: string): void;
-    deleteAllNodes(): void;
+    deleteAllData(): void;
     setNodeStatus(nodeName: string, status: NodeConfig['status']): void;
 }
 
@@ -27,6 +35,7 @@ export interface IDockerController {
     createNetwork(name: string): Promise<void>;
     removeNetwork(name: string): Promise<void>;
     execCommand(containerName: string, command: string): void;
+    getExecOutput(containerName: string, command: string): Promise<string>;
     attachToContainer(containerName: string): void;
     getContainer(containerName: string): any;
     pullImage(imageName: string): Promise<void>;

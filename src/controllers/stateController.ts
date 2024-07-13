@@ -21,6 +21,10 @@ export class StateController{
         return path.join(this.paths.data, 'nodes', nodeName);
     }
 
+    public getWalletsDir() {
+        return path.join(this.paths.data, 'wallets');
+    }
+
     public getLogDir() {
         return this.paths.log;
     }
@@ -29,9 +33,17 @@ export class StateController{
         return path.join(this.paths.data, 'network-state.json');
     }
 
+    private getWalletsFile() {
+        return path.join(this.paths.data, 'wallets.json');
+    }
+
     public createPaths() {
         fs.mkdirSync(this.paths.data, { recursive: true });
         fs.mkdirSync(this.paths.log, { recursive: true });
+        const walletPath = this.getWalletsDir();
+        if (!fs.existsSync(walletPath)) {
+            fs.mkdirSync(walletPath, { recursive: true });
+        }
     }
 
     public setNodeStatus(nodeName: string, status: NodeConfig['status']) {
@@ -72,13 +84,26 @@ export class StateController{
         return null;
     }
 
+    public loadWallets() {
+        if(fs.existsSync(this.getWalletsFile())) {
+            return JSON.parse(fs.readFileSync(this.getWalletsFile(), 'utf-8'));
+        }
+        return [];
+    }
+
+    public saveWallet(name: string, node: string) {
+        const wallets = this.loadWallets();
+        wallets.push({ name, node });
+        fs.writeFileSync(this.getWalletsFile(), JSON.stringify(wallets, null, 2));
+    }
+
     public deleteState() {
         if(fs.existsSync(this.getStateFile())) {
             fs.unlinkSync(this.getStateFile());
         }
     }
 
-    public deleteAllNodes() {
+    public deleteAllData() {
         if(fs.existsSync(this.paths.data)) {
             fs.rm(this.paths.data,{ recursive: true }, () => {
                 console.log('Deleted all nodes');

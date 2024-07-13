@@ -60,9 +60,41 @@ export class DockerController {
           console.error('Failed to start docker process:', err);
         });
     }
+    
+    public async getExecOutput(containerName: string, command: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const dockerProcess = spawn('docker', ['exec', '-i', containerName, 'sh', '-c', command], {
+                stdio: ['ignore', 'pipe', 'pipe'] // stdin ignored, stdout and stderr piped
+            });
+    
+            let output = '';
+            dockerProcess.stdout.on('data', (data) => {
+                output += data.toString();
+            });
+    
+            dockerProcess.stderr.on('data', (data) => {
+                output += data.toString(); // Optionally handle stderr differently
+            });
+    
+            dockerProcess.on('close', (code) => {
+                console.log(`Docker process exited with code ${code}`);
+                if (code === 0) {
+                    resolve(output);
+                } else {
+                    reject(new Error(`Docker process exited with code ${code}`));
+                }
+            });
+    
+            dockerProcess.on('error', (err) => {
+                console.error('Failed to start docker process:', err);
+                reject(err);
+            });
+        });
+    }
+   
 
     attachToContainer(name: string) {
-        const dockerProcess = spawn('docker', ['exec', '-it', name, 'sh'], {
+        const dockerProcess = spawn('docker', ['exec', '-it', name, 'sh', '-c', `PS1='${name} $ ' sh`], {
           stdio: 'inherit'
         });
       

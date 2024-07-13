@@ -1,7 +1,7 @@
-import networkController from "../controllers/networkController.js";
+import { getNetworkController } from "../controllers/networkController.js";
 
 export default async function lsAction(): Promise<void> {
-    const network = networkController;
+    const network = getNetworkController();
     try {
         network.listNodes();
     } catch (err) {

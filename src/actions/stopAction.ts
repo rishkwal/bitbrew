@@ -1,7 +1,7 @@
-import networkController from "../controllers/networkController.js";
+import { getNetworkController } from "../controllers/networkController.js";
 
 export default async function stopAction(nodes: string[], options: {all: boolean}) {
-    const network = networkController;
+    const network = getNetworkController();
     if (options.all) {
         nodes = network.nodes.map(node => node.name);
     } else {
