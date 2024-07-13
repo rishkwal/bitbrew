@@ -68,7 +68,7 @@ export class StateController{
         }
     }
 
-    public saveState(nodes: NodeConfig[]) {
+    public async saveState(nodes: NodeConfig[]) {
         if (!fs.existsSync(this.paths.data)) {
             this.createPaths();
         }
@@ -105,8 +105,10 @@ export class StateController{
 
     public deleteAllData() {
         if(fs.existsSync(this.paths.data)) {
-            fs.rm(this.paths.data,{ recursive: true }, () => {
-                console.log('Deleted all nodes');
+            fs.rm(this.paths.data,{ recursive: true }, (err) => {
+                if(err) {
+                    throw new Error(`Error deleting data directory: ${err.message}`);
+                }
             });
         }
     }

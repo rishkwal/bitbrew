@@ -1,16 +1,16 @@
 import { getNetworkController } from "../controllers/networkController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 export default async function connectAction(sourceNode: string, targetNodes: string[]): Promise<void> {
-    console.log('Connecting nodes...');
     try {
         const networkController = getNetworkController();
         await networkController.connectNodes(sourceNode, targetNodes);
     } catch(err) {
+        clilog.stopSpinner(false);
         if(err instanceof Error)
-            console.error(err.message)
+            clilog.error(err.message)
         else
-            console.error(err);
+            clilog.error(err as string);
         return;
     }
-    console.log('Nodes connected');
 }

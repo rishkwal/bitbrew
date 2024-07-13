@@ -19,7 +19,7 @@ export interface Wallet {
 
 export interface IStateController {
     loadState(): NetworkState | null;
-    saveState(nodes: NodeConfig[]): void;
+    saveState(nodes: NodeConfig[]): Promise<void>;
     createPaths(): void;
     deleteState(): void;
     getNodeDataDir(nodeName: string): string;

@@ -1,12 +1,12 @@
 import { getNetworkController } from "../controllers/networkController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 export default async function addAction(name: string) {
     const networkController = getNetworkController();
     if(!networkController.exist) {
-        console.log('Please create a network first using `bitbrew brew` command');
+        clilog.error('Please create a network first using `bitbrew brew` command');
         return;
     }
-    console.log(`Adding node ${name}...`);
     try {
         await networkController.addNode(name);
     } catch (err) {

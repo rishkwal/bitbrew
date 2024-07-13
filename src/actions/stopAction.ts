@@ -1,21 +1,23 @@
 import { getNetworkController } from "../controllers/networkController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 export default async function stopAction(nodes: string[], options: {all: boolean}) {
     const network = getNetworkController();
     if (options.all) {
         nodes = network.nodes.map(node => node.name);
-    } else {
-        console.log('Please specify nodes to stop');
+    } else if(nodes.length === 0) {
+        clilog.error('Please specify nodes to stop');
     }
     for (const node of nodes) {
-        console.log(`Stopping node ${node}...`);
         try {
             await network.stopNode(node);
         } catch (err) {
-            if(err instanceof Error)
-                console.error(err.message)
+            clilog.stopSpinner(false);
+            if(err instanceof Error) {
+                clilog.error(err.message)
+            }
             else
-                console.error(err);
+                clilog.error(err as string);
         }
     }
 }

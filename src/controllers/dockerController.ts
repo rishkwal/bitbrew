@@ -1,5 +1,6 @@
 import Dockerode from "dockerode";
 import { spawn } from "child_process";
+import { clilog } from "../utils/cliLogger.js";
 
 export class DockerController {
     docker: Dockerode;
@@ -18,10 +19,10 @@ export class DockerController {
                         if (err) {
                             reject(err);
                         } else {
-                            console.log('Image pulled successfully.');
+                            clilog.success('Image pulled successfully.');
                             resolve();
                         }
-                    }, (event) => console.log('Pulling image:', event.status));
+                    }, (event) => clilog.info(`Pulling image: ${event.status}`));
                 } else {
                     reject(new Error('Stream is undefined'));
                 }
@@ -32,11 +33,9 @@ export class DockerController {
     async createNetwork(name: string) {
         const checkNetwork = await this.docker.listNetworks({ filters: { name: [name] } });
         if ( checkNetwork && checkNetwork.length > 0 ) {
-            console.log('Network already exists');
-            return;
+            throw new Error('Network already exists');
         }
         await this.docker.createNetwork({ Name: name });
-        console.log('Network created');
     }
 
     async createContainer(config: Dockerode.ContainerCreateOptions) {
@@ -52,12 +51,12 @@ export class DockerController {
           stdio: 'inherit'
         });
       
-        dockerProcess.on('close', (code) => {
-          console.log(`Docker process exited with code ${code}`);
-        });
+        // dockerProcess.on('close', (code) => {
+        //   console.log(`Docker process exited with code ${code}`);
+        // });
       
         dockerProcess.on('error', (err) => {
-          console.error('Failed to start docker process:', err);
+          throw new Error('Failed to start docker process:', err);
         });
     }
     
@@ -77,17 +76,12 @@ export class DockerController {
             });
     
             dockerProcess.on('close', (code) => {
-                console.log(`Docker process exited with code ${code}`);
-                if (code === 0) {
-                    resolve(output);
-                } else {
-                    reject(new Error(`Docker process exited with code ${code}`));
-                }
+                // console.log(`Docker process exited with code ${code}`);
+                resolve(output);
             });
     
             dockerProcess.on('error', (err) => {
-                console.error('Failed to start docker process:', err);
-                reject(err);
+                throw new Error('Failed to start docker process:', err);
             });
         });
     }
@@ -99,28 +93,26 @@ export class DockerController {
         });
       
         dockerProcess.on('close', (code) => {
-          console.log(`Docker process exited with code ${code}`);
+        //   console.log(`Docker process exited with code ${code}`);
         });
       
         dockerProcess.on('error', (err) => {
-          console.error('Failed to start docker process:', err);
+          throw new Error('Failed to start docker process:', err);
         });
     }
 
     async removeNetwork(name: string) {
         const network = this.docker.getNetwork(name);
         if (!network) {
-            console.log('Network not found');
-            return;
+            throw new Error('Network not found');
         }
         try {
             await network.remove();
-            console.log('Network removed');
         } catch (error: unknown) {
             if(error instanceof Error) {
-                console.error(error.message);
+                throw new Error(error.message);
             } else {
-                console.error('An error occurred');
+                throw new Error('An error occurred');
             }
         }
     }
