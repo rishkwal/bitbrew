@@ -32,11 +32,9 @@ export class DockerController {
     async createNetwork(name: string) {
         const checkNetwork = await this.docker.listNetworks({ filters: { name: [name] } });
         if ( checkNetwork && checkNetwork.length > 0 ) {
-            console.log('Network already exists');
-            return;
+            throw new Error('Network already exists');
         }
         await this.docker.createNetwork({ Name: name });
-        console.log('Network created');
     }
 
     async createContainer(config: Dockerode.ContainerCreateOptions) {

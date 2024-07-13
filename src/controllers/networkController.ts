@@ -2,6 +2,7 @@ import { NetworkState, NodeConfig, IDockerController, IStateController, INodeCon
 import { StateController } from './stateController.js';
 import { DockerController } from './dockerController.js';
 import { NodeController } from './nodeController.js';
+import { clilog } from '../utils/cliLogger.js';
 
 export class NetworkController {
     public nodes: NodeConfig[] = [];
@@ -19,7 +20,7 @@ export class NetworkController {
 
     public initializeNodes(numberOfNodes: number): boolean {
         if(this.loadState()) {
-            console.log('A network already exists. Use `bitbrew start` to start the network.');
+            clilog.error('A network already exists. Use `bitbrew start` to start the network.');
             return false;
         }
         for (let i = 0; i < numberOfNodes; i++) {
@@ -54,8 +55,14 @@ export class NetworkController {
     }
 
     public async startNetwork() {
-        console.log('Creating network...');
-        await this.dockerController.createNetwork('bitbrew');
+        clilog.startSpinner('Creating network...');
+        try {
+            await this.dockerController.createNetwork('bitbrew');
+            clilog.stopSpinner(true, 'Network created');
+        } catch {
+            clilog.stopSpinner(false, 'Error creating network');
+            return;
+        }
         for(const node of this.nodes) {
             await this.nodeController.createNode(node);
             await this.nodeController.startNode(node);

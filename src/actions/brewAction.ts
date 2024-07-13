@@ -1,5 +1,6 @@
 import { getNetworkController } from "../controllers/networkController.js";
 import figlet from "figlet";
+import { clilog } from "../utils/cliLogger.js";
 
 export default async function brewAction(options: { nodes: number }) {
     console.log(figlet.textSync('BitBrew',{
@@ -7,7 +8,7 @@ export default async function brewAction(options: { nodes: number }) {
         horizontalLayout: 'default',
         verticalLayout: 'default'
       }));
-    console.log('Brewing your Bitcoin network with', options.nodes, 'nodes...');
+    clilog.info(`Brewing your Bitcoin network with ${options.nodes} nodes...`);
     const network = getNetworkController();
     try {
       network.createPaths();

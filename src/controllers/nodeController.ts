@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { NodeConfig, IDockerController, IStateController } from './types.js';
+import { clilog } from '../utils/cliLogger.js';
 
 export class NodeController {
     private readonly dockerController: IDockerController;
@@ -56,9 +57,10 @@ export class NodeController {
             return;
         }
         try {
+            clilog.startSpinner(`Starting node ${node.name}...`);
             await container.start();
             this.stateController.setNodeStatus(node.name, 'running');
-            console.log(`Started node ${node.name}`);
+            clilog.stopSpinner(true, `Started node ${node.name}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.error(error.message);
@@ -95,7 +97,7 @@ export class NodeController {
     }
 
     async waitForNodeReady(node: NodeConfig, maxRetries = 30, retryInterval=2000): Promise<void> {
-        console.log(`Waiting for node ${node.name} to be ready...`);
+        clilog.startSpinner(`Waiting for node ${node.name} to be ready...`);
         for (let i = 0; i < maxRetries; i++) {
             try {
                 const container = this.dockerController.getContainer(node.name);
@@ -113,7 +115,7 @@ export class NodeController {
                     stream.on('end', () => resolve(data));
                 });
                 if (output.includes('"chain": "regtest"')) {
-                    console.log(`Node ${node.name} is ready`);
+                    clilog.stopSpinner(true, `Node ${node.name} is ready`);
                     return;
                 }
             } catch (error) {
