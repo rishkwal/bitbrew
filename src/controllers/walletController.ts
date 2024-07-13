@@ -66,7 +66,15 @@ class WalletController {
             console.log(`Wallet ${walletName} not found`);
             return;
         }
-        await this.docker.getExecOutput(wallet.node, `bitcoin-cli -rpcwallet=${walletName} loadwallet ${walletName}`);
+        try {
+            await this.docker.getExecOutput(wallet.node, `bitcoin-cli -rpcwallet=${walletName} loadwallet ${walletName}`);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+            } else {
+                console.error(error);
+            }
+        }
     }
 
     private async getAddress(walletName: string): Promise<string | undefined> {
@@ -88,7 +96,6 @@ class WalletController {
             return;
         }
         const address = await this.getAddress(walletName);
-        console.log(address);
         this.docker.execCommand(wallet.node, `bitcoin-cli generatetoaddress ${blocks} ${address}`);
     }
 }
