@@ -1,6 +1,7 @@
 import Dockerode from "dockerode";
 import { spawn } from "child_process";
 import { clilog } from "../utils/cliLogger.js";
+import prettyjson from "prettyjson";
 
 export class DockerController {
     docker: Dockerode;
@@ -47,13 +48,27 @@ export class DockerController {
     }
 
     public execCommand(containerName: string, command: string) {
-        const dockerProcess = spawn('docker', ['exec', '-it', containerName, 'sh', '-c', command], {
-          stdio: 'inherit'
+        const dockerProcess = spawn('docker', ['exec', '-i', containerName, 'sh', '-c', command], {
+          stdio: ['ignore', 'pipe', 'pipe'] // stdin ignored, stdout and stderr piped
         });
-      
-        // dockerProcess.on('close', (code) => {
-        //   console.log(`Docker process exited with code ${code}`);
-        // });
+        
+        let output = '';
+        dockerProcess.stdout.on('data', (data) => {
+            output += data.toString();
+          });
+
+        dockerProcess.stderr.on('data', (data) => {
+            output += data.toString(); // Optionally handle stderr differently
+        });
+
+        dockerProcess.on('close', (code) => {
+            try {
+            const formattedOutput = prettyjson.render(JSON.parse(output));
+            console.log(formattedOutput);
+            } catch(err) {
+                console.log(output);
+            }
+        });
       
         dockerProcess.on('error', (err) => {
           throw new Error('Failed to start docker process:', err);
