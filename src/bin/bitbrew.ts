@@ -1,8 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --no-warnings
 import { Command } from 'commander';
 import figlet from 'figlet';
 import chalk from 'chalk';
-const packageJson = await import('../../package.json', { assert: { type: 'json' } });
+const info = await import('../../package.json', { assert: { type: 'json' } });
 
 import { BrewCommand, 
         CleanCommand, 
@@ -21,7 +21,7 @@ import { BrewCommand,
 
 const program: Command = new Command();
 program
-  .version(JSON.stringify(packageJson['default'].version))
+  .version(JSON.stringify(info.default.version))
   .description('BitBrew: Craft your own Bitcoin test networks with ease')
   .action(() => {
     program.outputHelp();
