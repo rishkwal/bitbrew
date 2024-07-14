@@ -201,7 +201,12 @@ export class NetworkController {
             const container = this.dockerController.getContainer(node.name);
             try {
                 clilog.startSpinner(`Removing node ${node.name}...`);
-                await container.remove({ force: true});
+                try{
+                    await container.inspect() 
+                    await container.remove({ force: true});
+                } catch {
+                    // Ignore error as container does not exist
+                }
                 clilog.stopSpinner(true, `Removed node ${node.name}`);
             } catch (error: unknown) {
                 if(error instanceof Error){

@@ -64,6 +64,11 @@ export class StateController{
             if(nodeIndex >= 0) {
                 state.nodes.splice(nodeIndex, 1);
                 this.saveState(state.nodes);
+                fs.rm(this.getNodeDataDir(nodeName), { recursive: true }, (err) => {
+                    if(err) {
+                        throw new Error(`Error deleting node data directory: ${err.message}`);
+                    }
+                });
             }
         }
     }
