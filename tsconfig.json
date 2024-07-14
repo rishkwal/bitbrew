@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -12,5 +12,5 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src"]
+  "include": ["src/**/*", "package.json"]
 }
