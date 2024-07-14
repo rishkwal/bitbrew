@@ -1,8 +1,11 @@
 {
   "name": "bitbrew",
-  "version": "1.0.0",
+  "version": "0.1.0-alpha.1",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "bitbrew": "dist/bin/bitbrew.js"
+  },
   "scripts": {
     "start": "ts-node src/index.ts",
     "test": "vitest",
@@ -15,6 +18,7 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
+    "cron": "^3.1.7",
     "dockerode": "^4.0.2",
     "env-paths": "^3.0.0",
     "figlet": "^1.7.0",

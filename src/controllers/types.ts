@@ -25,7 +25,7 @@ export interface IStateController {
     getNodeDataDir(nodeName: string): string;
     loadWallets(): Wallet[];
     getWalletsDir(): string;
-    saveWallet(name: string, node: string): void;
+    saveWallet(name: string, node: string): Promise<void>;
     removeNode(nodeName: string): void;
     deleteAllData(): void;
     setNodeStatus(nodeName: string, status: NodeConfig['status']): void;
@@ -34,7 +34,7 @@ export interface IStateController {
 export interface IDockerController {
     createNetwork(name: string): Promise<void>;
     removeNetwork(name: string): Promise<void>;
-    execCommand(containerName: string, command: string): void;
+    execCommand(containerName: string, command: string): Promise<string>;
     getExecOutput(containerName: string, command: string): Promise<string>;
     attachToContainer(containerName: string): void;
     getContainer(containerName: string): any;

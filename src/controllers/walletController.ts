@@ -18,11 +18,11 @@ class WalletController {
         return this.stateController.loadWallets();
     }
 
-    async createWallet(name: string, node: string) {
-        clilog.info('Creating wallet...');
+    async createWallet(name: string, node: string): Promise<string>{
+        clilog.startSpinner(`Creating wallet ${name} on node ${node}...`);
         try{
-        this.docker.execCommand(node, `bitcoin-cli createwallet ${name}`);
-        this.stateController.saveWallet(name, node);
+        await this.docker.getExecOutput(node, `bitcoin-cli createwallet ${name}`);
+        await this.stateController.saveWallet(name, node);
         } catch (error) {
             if (error instanceof Error) {
                 throw new Error(error.message);
@@ -30,6 +30,19 @@ class WalletController {
                 throw new Error('Unknown error creating wallet');
             }
         }
+        clilog.stopSpinner(true, `Wallet ${name} created`);
+        return name;
+    }
+
+    async createWallets(nodes: number): Promise<string[]> {
+        const wallets: string[] = [];
+        for (let i = 0; i < nodes; i++) {
+            const name = `wallet${i}`;
+            const node = `node${i}`;
+            await this.createWallet(name, node);
+            wallets.push(name);
+        }
+        return wallets;
     }
 
     async listWallets() {
@@ -118,7 +131,7 @@ class WalletController {
         }
         try {
         const address = await this.getAddress(walletName);
-        this.docker.execCommand(wallet.node, `bitcoin-cli generatetoaddress ${blocks} ${address}`);
+        await this.docker.execCommand(wallet.node, `bitcoin-cli generatetoaddress ${blocks} ${address}`);
         } catch (error) {
             if (error instanceof Error) {
                 throw new Error(error.message);
