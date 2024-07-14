@@ -178,7 +178,6 @@ export class NetworkController {
     }
 
     public async connectNodes(sourceNodeName: string, targetNodeNames: string[]) {
-        clilog.info('Connecting nodes...');
         const sourceNode = this.nodes.find((node) => node.name === sourceNodeName);
         if(!sourceNode) {
             throw new Error(`Node ${sourceNodeName} not found`);
@@ -191,7 +190,26 @@ export class NetworkController {
             return node;
         });
         for(const targetNode of targetNodes) {
+            clilog.startSpinner(`Connecting nodes ${sourceNode.name} and ${targetNode.name}...`);
             await this.nodeController.connectNode(sourceNode, targetNode);
+            clilog.stopSpinner(true, `Connected ${sourceNode.name} to ${targetNode.name}`);
+        }
+    }
+
+    // connect all nodes in a linear fashion
+    public async connectAllNodes() {
+        clilog.info('Connecting all nodes...');
+        if(this.nodes.length < 2) {
+            throw new Error('At least two nodes are required to connect all nodes');
+        }
+        try {
+            for(let i = 0; i < this.nodes.length-1; i++) {
+                const sourceNode: string = this.nodes[i]!.name!;
+                const targetNode: string[] = [this.nodes[(i + 1) % this.nodes.length]!.name];
+                await this.connectNodes(sourceNode, targetNode);
+            }
+        } catch(err) {
+            throw new Error('Error connecting nodes');
         }
     }
 

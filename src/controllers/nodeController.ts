@@ -130,6 +130,5 @@ export class NodeController {
             Cmd: ['bitcoin-cli', 'addnode', targetNode.name, 'add'],
         }).then((exec: any) => exec.start({ hijack: true, stdin: true }));
         //TODO: Check if the connection was successful
-        clilog.success(`Connected ${sourceNode.name} to ${targetNode.name}`);
     }
 }
