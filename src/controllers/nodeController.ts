@@ -34,6 +34,9 @@ export class NodeController {
 
         await this.dockerController.createContainer({
             Image: imageName,
+            Labels: {
+                'app': 'bitbrew',
+            },
             name: node.name,
             NetworkingConfig: {
                 EndpointsConfig: {

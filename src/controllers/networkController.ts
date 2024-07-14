@@ -24,7 +24,7 @@ export class NetworkController {
         }
         for (let i = 0; i < numberOfNodes; i++) {
             this.nodes.push({
-                name: `node-${i}`,
+                name: `node${i}`,
                 port: 18444,
                 rpcPort: 18443,
                 status: 'initialized',
