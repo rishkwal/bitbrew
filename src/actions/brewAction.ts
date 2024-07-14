@@ -1,4 +1,5 @@
 import { getNetworkController } from "../controllers/networkController.js";
+import { getWalletController } from "../controllers/walletController.js";
 import figlet from "figlet";
 import chalk from "chalk";
 import { clilog } from "../utils/cliLogger.js";
@@ -10,11 +11,13 @@ export default async function brewAction(options: { nodes: number }) {
       verticalLayout: 'default'
     })));
     clilog.info(`Brewing your Bitcoin network with ${options.nodes} nodes...`);
-    const network = getNetworkController();
+    const networkController = getNetworkController();
+    const walletController = getWalletController();
     try {
-      network.createPaths();
-      network.initializeNodes(options.nodes);
-      await network.startNetwork();
+      await networkController.createPaths();
+      await networkController.initializeNodes(options.nodes);
+      await networkController.startNetwork();
+      await walletController.createWallets(options.nodes);
     } catch (err) {
         clilog.stopSpinner(false);
         if(err instanceof Error)

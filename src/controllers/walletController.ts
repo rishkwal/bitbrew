@@ -19,9 +19,9 @@ class WalletController {
     }
 
     async createWallet(name: string, node: string) {
-        clilog.info('Creating wallet...');
+        clilog.startSpinner(`Creating wallet ${name} on node ${node}...`);
         try{
-        this.docker.execCommand(node, `bitcoin-cli createwallet ${name}`);
+        this.docker.getExecOutput(node, `bitcoin-cli createwallet ${name}`);
         this.stateController.saveWallet(name, node);
         } catch (error) {
             if (error instanceof Error) {
@@ -29,6 +29,15 @@ class WalletController {
             } else {
                 throw new Error('Unknown error creating wallet');
             }
+        }
+        clilog.stopSpinner(true, `Wallet ${name} created`);
+    }
+
+    async createWallets(nodes: number) {
+        for (let i = 0; i < nodes; i++) {
+            const name = `wallet${i}`;
+            const node = `node${i}`;
+            await this.createWallet(name, node);
         }
     }
 
