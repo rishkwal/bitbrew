@@ -96,10 +96,13 @@ export class StateController{
         return [];
     }
 
-    public saveWallet(name: string, node: string) {
+    public saveWallet(name: string, node: string): Promise<void> {
         const wallets = this.loadWallets();
         wallets.push({ name, node });
-        fs.writeFileSync(this.getWalletsFile(), JSON.stringify(wallets, null, 2));
+        return new Promise((resolve, reject) => {
+            fs.writeFileSync(this.getWalletsFile(), JSON.stringify(wallets, null, 2));
+        resolve();
+        });
     }
 
     public deleteState() {

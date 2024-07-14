@@ -47,32 +47,35 @@ export class DockerController {
         return this.docker.getContainer(name);
     }
 
-    public execCommand(containerName: string, command: string) {
-        const dockerProcess = spawn('docker', ['exec', '-i', containerName, 'sh', '-c', command], {
-          stdio: ['ignore', 'pipe', 'pipe'] // stdin ignored, stdout and stderr piped
-        });
+    public async execCommand(containerName: string, command: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const dockerProcess = spawn('docker', ['exec', '-i', containerName, 'sh', '-c', command], {
+            stdio: ['ignore', 'pipe', 'pipe'] // stdin ignored, stdout and stderr piped
+            });
+            
+            let output = '';
+            dockerProcess.stdout.on('data', (data) => {
+                output += data.toString();
+            });
+
+            dockerProcess.stderr.on('data', (data) => {
+                output += data.toString(); // Optionally handle stderr differently
+            });
+
+            dockerProcess.on('close', (code) => {
+                try {
+                const formattedOutput = prettyjson.render(JSON.parse(output));
+                console.log(formattedOutput);
+                resolve(output);
+                } catch(err) {
+                    console.log(output);
+                }
+            });
         
-        let output = '';
-        dockerProcess.stdout.on('data', (data) => {
-            output += data.toString();
-          });
-
-        dockerProcess.stderr.on('data', (data) => {
-            output += data.toString(); // Optionally handle stderr differently
-        });
-
-        dockerProcess.on('close', (code) => {
-            try {
-            const formattedOutput = prettyjson.render(JSON.parse(output));
-            console.log(formattedOutput);
-            } catch(err) {
-                console.log(output);
-            }
-        });
-      
-        dockerProcess.on('error', (err) => {
-          throw new Error('Failed to start docker process');
-        });
+            dockerProcess.on('error', (err) => {
+            throw new Error('Failed to start docker process');
+            });
+         });
     }
     
     public async getExecOutput(containerName: string, command: string): Promise<string> {

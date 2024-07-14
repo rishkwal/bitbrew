@@ -2,6 +2,8 @@
 import { Command } from 'commander';
 import figlet from 'figlet';
 import chalk from 'chalk';
+const packageJson = await import('../../package.json', { assert: { type: 'json' } });
+
 import { BrewCommand, 
         CleanCommand, 
         ConnectCommand,
@@ -18,9 +20,8 @@ import { BrewCommand,
       } from '../commands/index.js';
 
 const program: Command = new Command();
-
 program
-  .version('0.1.0')
+  .version(JSON.stringify(packageJson['default'].version))
   .description('BitBrew: Craft your own Bitcoin test networks with ease')
   .action(() => {
     program.outputHelp();
