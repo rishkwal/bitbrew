@@ -71,7 +71,7 @@ export class DockerController {
         });
       
         dockerProcess.on('error', (err) => {
-          throw new Error('Failed to start docker process:', err);
+          throw new Error('Failed to start docker process');
         });
     }
     
@@ -96,7 +96,7 @@ export class DockerController {
             });
     
             dockerProcess.on('error', (err) => {
-                throw new Error('Failed to start docker process:', err);
+                throw new Error('Failed to start docker process:');
             });
         });
     }
@@ -112,7 +112,7 @@ export class DockerController {
         });
       
         dockerProcess.on('error', (err) => {
-          throw new Error('Failed to start docker process:', err);
+          throw new Error('Failed to start docker process');
         });
     }
 
