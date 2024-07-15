@@ -3,6 +3,8 @@ export interface NodeConfig {
     name: string;
     port: number;
     rpcPort: number;
+    hostPort: number;
+    hostRpcPort: number;
     status: 'stopped' | 'running' | 'initialized' | 'ready' | 'error';
     dataDir: string;
 }

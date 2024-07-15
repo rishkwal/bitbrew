@@ -47,6 +47,10 @@ export class NodeController {
                 Binds: [`${node.dataDir}:/home/bitcoin/.bitcoin`,
                         `${this.stateController.getWalletsDir()}:/home/bitcoin/.bitcoin/regtest/wallets`
                 ],
+                PortBindings: {
+                    '18444/tcp': [{ HostPort: node.hostPort.toString() }],
+                    '18443/tcp': [{ HostPort: node.hostRpcPort.toString() }],
+                },
                 NetworkMode: 'bitbrew',
             }
         });

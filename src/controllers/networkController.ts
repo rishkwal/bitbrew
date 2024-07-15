@@ -25,10 +25,12 @@ export class NetworkController {
         for (let i = 0; i < numberOfNodes; i++) {
             this.nodes.push({
                 name: `node${i}`,
+                hostPort: 20443 + i,
+                hostRpcPort: 21443 + i,
                 port: 18444,
                 rpcPort: 18443,
                 status: 'initialized',
-                dataDir: this.stateController.getNodeDataDir(`node-${i}`),
+                dataDir: this.stateController.getNodeDataDir(`node${i}`),
             });
         }
         this.stateController.saveState(this.nodes);
@@ -76,8 +78,10 @@ export class NetworkController {
         }
         console.table(this.nodes.map((node: NodeConfig) => {
             return {
-                name: node.name,
-                status: node.status,
+                'name': node.name,
+                'status': node.status,
+                'port': node.hostPort,
+                'RPC port': node.hostRpcPort,
             };
         }));
     }
@@ -92,6 +96,8 @@ export class NetworkController {
             name: nodeName,
             port: 18444,
             rpcPort: 18443,
+            hostPort: 20443 + this.nodes.length,
+            hostRpcPort: 21443 + this.nodes.length,
             status: 'initialized',
             dataDir: this.stateController.getNodeDataDir(nodeName),
         };
