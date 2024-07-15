@@ -12,8 +12,9 @@
     "build": "npx tsc",
     "lint": "npx eslint src test",
     "lint:fix": "npm run lint -- --fix",
-    "prettier": "npx prettier src test --check",
-    "prettier:fix": "npm run prettier -- --write"
+    "format": "npx prettier src test --check",
+    "format:fix": "npm run format -- --write",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "rishkwal",
@@ -38,6 +39,7 @@
     "@types/prettyjson": "^0.0.33",
     "eslint": "^9.7.0",
     "globals": "^15.8.0",
+    "husky": "^9.0.11",
     "pino-pretty": "^11.2.1",
     "prettier": "3.3.3",
     "ts-node": "^10.9.2",
