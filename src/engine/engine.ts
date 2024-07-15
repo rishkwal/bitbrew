@@ -1,5 +1,6 @@
 import { CronJob } from "cron";
 import { getWalletController } from "../controllers/walletController.js";
+import { clilog } from "../utils/cliLogger.js";
 
 export class Engine {
 
@@ -14,7 +15,7 @@ export class Engine {
     private async mineInitialBlocks() {
         const walletController = getWalletController();
         await walletController.mineBlocks(this.miner, 101);
-        console.log(`Mined 101 blocks to ${this.miner}`);
+        clilog.info(`Mined 101 blocks to ${this.miner}`);
     }
 
     private async distributeMinedCoins() {
@@ -22,7 +23,7 @@ export class Engine {
         for (let i = 1; i < this.wallets.length; i++) {
             await walletController.transferBitcoin(this.miner, this.wallets[i]!, 50/this.wallets.length);
         }
-        console.log("Distributed coins");
+        clilog.info("Distributed coins");
     }
 
     private async mineBlock(miner: string) {
@@ -39,7 +40,7 @@ export class Engine {
         const sender = wallets[Math.floor(Math.random() * wallets.length)];
         const receiver = wallets[Math.floor(Math.random() * wallets.length)];
         await walletController.transferBitcoin(sender!, receiver!, amount);
-        console.log(`Transferred ${amount} BTC from ${sender} to ${receiver}`);
+        clilog.info(`Transferred ${amount} BTC from ${sender} to ${receiver}`);
     }
 
     public async run() {
