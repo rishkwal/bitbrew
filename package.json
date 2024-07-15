@@ -1,6 +1,6 @@
 {
   "name": "bitbrew",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -9,10 +9,15 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "test": "vitest",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "lint": "npx eslint src test",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "npx prettier src test --check",
+    "format:fix": "npm run format -- --write",
+    "prepare": "husky"
   },
   "keywords": [],
-  "author": "",
+  "author": "rishkwal",
   "license": "ISC",
   "type": "module",
   "dependencies": {
@@ -27,13 +32,19 @@
     "prettyjson": "^1.2.5"
   },
   "devDependencies": {
+    "@eslint/js": "^9.7.0",
     "@types/dockerode": "^3.3.29",
     "@types/figlet": "^1.5.8",
     "@types/node": "^20.14.9",
     "@types/prettyjson": "^0.0.33",
+    "eslint": "^9.7.0",
+    "globals": "^15.8.0",
+    "husky": "^9.0.11",
     "pino-pretty": "^11.2.1",
+    "prettier": "3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2",
+    "typescript-eslint": "^7.16.0",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^2.0.1"
   }
