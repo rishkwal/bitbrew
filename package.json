@@ -1,8 +1,7 @@
 {
   "name": "bitbrew",
   "version": "0.1.0-alpha",
-  "description": "",
-  "main": "index.js",
+  "description": "A tool for crafting Bitcoin testing environments with Docker",
   "bin": {
     "bitbrew": "dist/src/bin/bitbrew.js"
   },
@@ -16,9 +15,19 @@
     "format:fix": "npm run format -- --write",
     "prepare": "husky"
   },
-  "keywords": [],
-  "author": "rishkwal",
-  "license": "ISC",
+  "keywords": [
+    "bitcoin",
+    "docker",
+    "cli",
+    "testnet"
+  ],
+  "author": {
+    "name":"rishkwal",
+    "url": "https://github.com/rishkwal"
+  },
+  "license": "GPL-3.0-only",
+  "repository": "https://github.com/rishkwal/bitbrew",
+  "homepage": "https://github.com/rishkwal/bitbrew#readme",
   "type": "module",
   "dependencies": {
     "chalk": "^5.3.0",
