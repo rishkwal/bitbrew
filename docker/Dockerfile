@@ -2,7 +2,7 @@ FROM debian:bullseye-slim
 
 ARG UID=1000
 ARG GID=1000
-ENV BITCOIN_VERSION=24.0.1
+ENV BITCOIN_VERSION=27.0
 ENV BITCOIN_DATA=/home/bitcoin/.bitcoin
 ENV PATH=/opt/bitcoin-${BITCOIN_VERSION}/bin:$PATH
 
