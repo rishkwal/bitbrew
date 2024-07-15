@@ -16,17 +16,40 @@ export class NodeController {
             fs.mkdirSync(node.dataDir, { recursive: true });
         }
 
-        const imageName = `bitcoin-regtest:1.0`;
-        const images = await this.dockerController.docker.listImages({ filters: { reference: [imageName] } });
+        const imageName = `rishkwal/bitbrew-bitcoin-core:27.0-0.1.0-alpha`;
+        let images = await this.dockerController.docker.listImages({ filters: { reference: [imageName] } });
 
         if (images.length === 0) {
-            clilog.info(`Image ${imageName} not found, Pulling from registry...`)
-            await this.dockerController.docker.pull(imageName);
+            clilog.startSpinner(`Image ${imageName} not found, Pulling from registry...`)
+
+            try {
+                const stream = await this.dockerController.docker.pull(imageName);
+                
+                // Wait for the pull to complete
+                await new Promise((resolve, reject) => {
+                    this.dockerController.docker.modem.followProgress(stream, (err: Error | null, res: any[] | null) => err ? reject(err) : resolve(res));
+                });
+                
+                // Verify the image was pulled successfully
+                images = await this.dockerController.docker.listImages({ filters: { reference: [imageName] } });
+                
+                if (images.length === 0) {
+                    throw new Error(`Failed to pull image ${imageName}`);
+                }
+                
+                clilog.stopSpinner(true, `Image ${imageName} pulled successfully.`);
+            } catch (error) {
+                if (error instanceof Error) {
+                    throw new Error(error.message);
+                } else {
+                    throw new Error('Unknown error pulling image');
+                }
+            }
         }
         // Check if the container already exists
         try {
-            const container = this.dockerController.getContainer(node.name);
-            await container.inspect()
+            const container = await this.dockerController.getContainer(node.name);
+            await container.inspect();                
             return;
         } catch (error) {
             // Ignore error and continue creating the container
