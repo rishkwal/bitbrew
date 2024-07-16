@@ -34,8 +34,5 @@ EXPOSE 18443 18444
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-USER bitcoin
-WORKDIR /home/bitcoin
-
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bitcoind", "-regtest"]
