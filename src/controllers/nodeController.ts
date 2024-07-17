@@ -19,7 +19,7 @@ export class NodeController {
       fs.mkdirSync(node.dataDir, { recursive: true });
     }
 
-    const imageName = `rishkwal/bitbrew-bitcoin-core:27.0-0.1.0-alpha`;
+    const imageName = `rishkwal/bitbrew-bitcoind:27.0-0.1.0-alpha`;
     let images = await this.dockerController.docker.listImages({
       filters: { reference: [imageName] },
     });
@@ -81,8 +81,8 @@ export class NodeController {
       },
       HostConfig: {
         Binds: [
-          `${node.dataDir}:/home/bitcoin/.bitcoin`,
-          `${this.stateController.getWalletsDir()}:/home/bitcoin/.bitcoin/regtest/wallets`,
+          `${node.dataDir}:/root/.bitcoin`,
+          `${this.stateController.getWalletsDir()}:/root/.bitcoin/regtest/wallets`,
         ],
         PortBindings: {
           '18444/tcp': [{ HostPort: node.hostPort.toString() }],

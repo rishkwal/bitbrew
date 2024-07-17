@@ -1,4 +1,4 @@
-#!/usr/bin/env node --no-warnings
+#!/usr/bin/env -S node --no-warnings
 import { Command } from 'commander';
 import figlet from 'figlet';
 import chalk from 'chalk';
@@ -44,12 +44,12 @@ program.addCommand(LsCommand);
 program.addCommand(StartCommand);
 program.addCommand(StopCommand);
 program.addCommand(AddCommand);
-program.addCommand(CleanCommand);
 program.addCommand(RemoveCommand);
 program.addCommand(ExecCommand);
 program.addCommand(AttachCommand);
 program.addCommand(WalletCommand);
 program.addCommand(SendCommand);
 program.addCommand(MineCommand);
+program.addCommand(CleanCommand);
 
 program.parse(process.argv);
