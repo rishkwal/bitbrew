@@ -90,7 +90,7 @@ Start by brewing your network:
 $ bitbrew brew
 ```
 
-This will create and start two nodes `node0` and `node`.
+This will create and start two nodes `node0` and `node1`.
 
 ### List the nodes
 
