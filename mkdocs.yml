@@ -1,0 +1,63 @@
+site_name: BitBrew
+
+repo_url: https://github.com/rishkwal/bitbrew
+repo_name: rishkwal/bitbrew
+
+nav:
+  - Introduction: index.md
+  - Getting Started: getting-started.md
+  - Roadmap: roadmap.md
+  - Examples:
+    - Basic Usage: examples/basic-usage.md
+
+theme:
+  name: material
+  default_palette: slate
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  palette: 
+    - scheme: slate
+      primary: brown
+      accent: deep orange
+      text: white
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+    - scheme: default
+      primary: brown
+      accent: deep orange
+      background: white
+      text: black
+      code: brown
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    
+  features:
+      - navigation.footer
+
+extra:
+  generator: false
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: false
+  - pymdownx.escapeall:
+      hardbreak: true
+      nbsp: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.critic
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
