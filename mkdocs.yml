@@ -2,6 +2,7 @@ site_name: BitBrew
 
 repo_url: https://github.com/rishkwal/bitbrew
 repo_name: rishkwal/bitbrew
+edit_uri: edit/main/docs/
 
 nav:
   - Introduction: index.md
@@ -37,6 +38,7 @@ theme:
     
   features:
       - navigation.footer
+      - content.action.edit
 
 extra:
   generator: false
