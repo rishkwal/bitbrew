@@ -6,11 +6,11 @@ This is a high-level roadmap for the BitBrew project. It outlines the key featur
 
 ## 0.1.0
 
+- [x] Update documentation and add examples
 - [ ] Add debug logging and improve error handling
 - [ ] Fix bugs from initial release and improve overall stability
 - [ ] Improve help messages
 - [ ] Use `esbuild` for more compact and faster builds
-- [ ] Update documentation and add examples
 
 ## 0.2.0
 
@@ -31,6 +31,7 @@ This is a high-level roadmap for the BitBrew project. It outlines the key featur
 - Develop snapshot and restore functionality for network states
 - Implement time manipulation features (fast-forward, pause)
 - Implement scalability solutions to span across multiple hosts
+- Adding detailed analytics and monitoring capabilities using tools like Prometheus and Grafana
 
 ## Milestones
 
