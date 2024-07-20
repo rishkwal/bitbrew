@@ -150,7 +150,6 @@ Congratulations! You've set up a Bitcoin test network, created wallets, mined bl
 
 - Explore more commands with `bitbrew --help`
 - Check out the [User Guide](user-guide/basic-concepts.md) for detailed information on each feature
-- Try our [Examples](examples/multi-node-network.md) for more complex scenarios, like setting up multi-node networks or simulating specific network conditions
 - Join our community forums or GitHub discussions to share your experiences and get help
 
 Remember, BitBrew allows you to experiment freely without affecting the real Bitcoin network. Happy brewing, and enjoy exploring the world of Bitcoin development!
