@@ -25,6 +25,7 @@ This is a high-level roadmap for the BitBrew project. It outlines the key featur
 
 - Develop a plugin system/architecture for extensibility
 - Implement advanced features like custom signet networks and support for other Bitcoin implementations
+- Simulate network latency
 - Create an API for programmatic interaction with the network
 - Implement network visualization
 - Add support for custom Docker images
