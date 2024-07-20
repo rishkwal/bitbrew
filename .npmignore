@@ -23,6 +23,7 @@ docs/
 mkdocs.yml
 requirements.txt
 .cache/
+site/
 
 # Development files
 *.log
