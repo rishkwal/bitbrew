@@ -40,6 +40,8 @@ By choosing BitBrew, you're opting for reliability over unpredictable testnet be
 
 ## Quick Start
 
+Make sure you have [Docker](https://docker.com) and [Node.js](https://nodejs.org) installed on your system.
+
 Get started with BitBrew in minutes:
 
 ```bash
