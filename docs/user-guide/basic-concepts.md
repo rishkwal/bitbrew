@@ -21,6 +21,8 @@ Common node operations:
 4. Stop a node: `bitbrew stop <node_name>`
 5. List all nodes: `bitbrew ls`
 
+**Note**: For all BitBrew nodes, the default RPC credentials are: `rpcuser=user` and `rpcpassword=pass`.
+
 ## Wallets
 
 Wallets in BitBrew are Bitcoin wallets associated with specific nodes. They serve as the interface for managing, sending, and receiving Bitcoin within your test network. Each wallet is tied to a specific node, allowing you to simulate different participants in your Bitcoin network.
