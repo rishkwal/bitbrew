@@ -53,8 +53,8 @@ This simple command installs BitBrew and creates your first test network with tw
 
 To dive deeper into BitBrew:
 
-1. Check out the [Installation](getting-started/installation.md) guide for detailed setup instructions.
-2. Learn how to use BitBrew with our [Quick Start](getting-started/quick-start.md) tutorial.
-3. Explore advanced features in the [User Guide](user-guide/basic-usage.md).
+1. Check out [Getting Started](getting-started.md) for detailed setup instructions.
+2. Have a look at all the commands at [Command Reference](user-guide/command-reference.md)
+3. Look at an [example](examples/basic-usage.md).
 
 Join us in brewing the future of Bitcoin development, where reliable and controllable test environments are just a command away!
