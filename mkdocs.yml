@@ -3,20 +3,27 @@ site_name: BitBrew
 repo_url: https://github.com/rishkwal/bitbrew
 repo_name: rishkwal/bitbrew
 edit_uri: edit/main/docs/
+site_url: https://rishkwal.github.io/bitbrew
+
+plugins:
+  - social
 
 nav:
   - Introduction: index.md
   - Getting Started: getting-started.md
+  - User Guide:
+    - Basic Concepts: user-guide/basic-concepts.md
+    - Command Reference: user-guide/command-reference.md
   - Roadmap: roadmap.md
   - Examples:
-    - Basic Usage: examples/basic-usage.md
+    - Basic Example: examples/basic-usage.md
 
 theme:
   name: material
   default_palette: slate
   font:
     text: 'Roboto'
-    code: 'Roboto Mono'
+    code: 'Menlo'
   palette: 
     - scheme: slate
       primary: brown
@@ -39,6 +46,7 @@ theme:
   features:
       - navigation.footer
       - content.action.edit
+      - content.code.copy
 
 extra:
   generator: false
