@@ -1,2 +1,7 @@
 node_modules/
 dist/
+
+venv/
+site/
+
+.cache/

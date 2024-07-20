@@ -20,7 +20,12 @@ docker/
 
 # Documentation
 docs/
+mkdocs.yml
+requirements.txt
+.cache/
+site/
 
 # Development files
 *.log
 .DS_Store
+venv/

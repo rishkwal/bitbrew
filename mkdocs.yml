@@ -1,0 +1,74 @@
+site_name: BitBrew
+
+repo_url: https://github.com/rishkwal/bitbrew
+repo_name: rishkwal/bitbrew
+edit_uri: edit/main/docs/
+site_url: https://rishkwal.github.io/bitbrew
+site_description: A simple tool to craft private Bitcoin test networks
+
+plugins:
+  - social
+
+nav:
+  - Introduction: index.md
+  - Getting Started: getting-started.md
+  - User Guide:
+    - Basic Concepts: user-guide/basic-concepts.md
+    - Command Reference: user-guide/command-reference.md
+  - Roadmap: roadmap.md
+  - Examples:
+    - Basic Example: examples/basic-usage.md
+
+theme:
+  name: material
+  default_palette: slate
+  font:
+    text: 'Roboto'
+    code: 'Menlo'
+  palette: 
+    - scheme: slate
+      primary: brown
+      accent: deep orange
+      text: white
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+    - scheme: default
+      primary: brown
+      accent: deep orange
+      background: white
+      text: black
+      code: brown
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    
+  features:
+      - navigation.footer
+      - content.action.edit
+      - content.code.copy
+
+extra:
+  generator: false
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: false
+  - pymdownx.escapeall:
+      hardbreak: true
+      nbsp: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.critic
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
