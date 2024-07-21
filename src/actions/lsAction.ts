@@ -3,7 +3,7 @@ import { clilog } from '../utils/cliLogger.js';
 import { logger } from '../utils/logger.js';
 
 export default async function lsAction(): Promise<void> {
-  logger.info('running ls action');
+  logger.info('Running ls action');
   const network = getNetworkController();
   try {
     network.listNodes();

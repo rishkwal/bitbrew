@@ -6,7 +6,7 @@ export default async function createAction(
   name: string,
   node: string,
 ): Promise<void> {
-  logger.info('Running create action');
+  logger.info(`Running create action with name ${name} on node ${node}`);
   const walletController = getWalletController();
   try {
     await walletController.createWallet(name, node);

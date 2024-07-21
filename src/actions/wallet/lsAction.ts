@@ -3,7 +3,7 @@ import { clilog } from '../../utils/cliLogger.js';
 import { logger } from '../../utils/logger.js';
 
 export default async function LsAction(): Promise<void> {
-  logger.info('Running ls action');
+  logger.info('Running wallet ls action');
   const walletController = getWalletController();
   try {
     walletController.listWallets();

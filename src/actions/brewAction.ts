@@ -19,7 +19,7 @@ export default async function brewAction(options: {
       }),
     ),
   );
-  logger.info('running brew action');
+  logger.info(`running brew action with options: ${JSON.stringify(options)}`);
   clilog.info(`Brewing your Bitcoin network with ${options.nodes} nodes...`);
   const networkController = getNetworkController();
   const walletController = getWalletController();

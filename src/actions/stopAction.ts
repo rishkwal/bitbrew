@@ -6,7 +6,7 @@ export default async function stopAction(
   nodes: string[],
   options: { all: boolean },
 ) {
-  logger.info('running stop action');
+  logger.info(`Running stop action with nodes ${nodes}, all flag ${options.all}`);
   const network = getNetworkController();
   if (options.all) {
     nodes = network.nodes.map((node) => node.name);

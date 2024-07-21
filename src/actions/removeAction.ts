@@ -3,7 +3,7 @@ import { clilog } from '../utils/cliLogger.js';
 import { logger } from '../utils/logger.js';
 
 export default async function removeAction(node: string) {
-  logger.info('running remove action');
+  logger.info(`Running remove action for node ${node}`);
   const network = getNetworkController();
   try {
     await network.removeNode(node);

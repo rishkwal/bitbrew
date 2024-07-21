@@ -6,7 +6,7 @@ export default async function startAction(
   nodes: string[],
   options: { all: boolean },
 ): Promise<void> {
-  logger.info('running start action');
+  logger.info(`Running start action with nodes ${nodes}, all flag ${options.all}`);
   const network = getNetworkController();
   if (nodes.length === 0) {
     if (options.all) {

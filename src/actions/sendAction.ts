@@ -7,7 +7,7 @@ export default async function SendAction(
   to: string,
   amount: number,
 ) {
-  logger.info('running send action');
+  logger.info(`Running send action from ${from} to ${to}`);
   if (isNaN(amount)) {
     clilog.error('Amount must be a number');
     process.exit(1);

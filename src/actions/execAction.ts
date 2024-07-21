@@ -7,7 +7,7 @@ export default async function execAction(
   command: string,
 ): Promise<void> {
   try {
-    logger.info('running exec action');
+    logger.info(`Running exec action on node ${node} with command ${command}`);
     const networkController = getNetworkController();
     networkController.execNodeCommand(node, command);
   } catch (err) {
