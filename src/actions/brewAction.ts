@@ -4,6 +4,7 @@ import figlet from 'figlet';
 import chalk from 'chalk';
 import { clilog } from '../utils/cliLogger.js';
 import { Engine } from '../engine/engine.js';
+import { logger } from '../utils/logger.js';
 
 export default async function brewAction(options: {
   nodes: number;
@@ -18,6 +19,7 @@ export default async function brewAction(options: {
       }),
     ),
   );
+  logger.info('running brew action');
   clilog.info(`Brewing your Bitcoin network with ${options.nodes} nodes...`);
   const networkController = getNetworkController();
   const walletController = getWalletController();
@@ -32,6 +34,7 @@ export default async function brewAction(options: {
       engine.run();
     }
   } catch (err) {
+    logger.error(err);
     clilog.stopSpinner(false);
     if (err instanceof Error) clilog.error(err.message);
     else clilog.error(err as string);
