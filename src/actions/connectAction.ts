@@ -7,7 +7,9 @@ export default async function connectAction(
   targetNodes: string[],
   options: { all: boolean },
 ): Promise<void> {
-  logger.info(`Running connect action with source node ${sourceNode} and target nodes ${targetNodes}`);
+  logger.info(
+    `Running connect action with source node ${sourceNode} and target nodes ${targetNodes}`,
+  );
   try {
     const networkController = getNetworkController();
     if (
