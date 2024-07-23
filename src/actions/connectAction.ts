@@ -1,11 +1,15 @@
 import { getNetworkController } from '../controllers/networkController.js';
 import { clilog } from '../utils/cliLogger.js';
+import { logger } from '../utils/logger.js';
 
 export default async function connectAction(
   sourceNode: string,
   targetNodes: string[],
   options: { all: boolean },
 ): Promise<void> {
+  logger.info(
+    `Running connect action with source node ${sourceNode} and target nodes ${targetNodes}`,
+  );
   try {
     const networkController = getNetworkController();
     if (
@@ -22,6 +26,7 @@ export default async function connectAction(
       await networkController.connectAllNodes();
     }
   } catch (err) {
+    logger.error(err);
     clilog.stopSpinner(false);
     if (err instanceof Error) clilog.error(err.message);
     else clilog.error(err as string);
