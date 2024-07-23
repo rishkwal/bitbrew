@@ -34,6 +34,7 @@ This is a high-level roadmap for the BitBrew project. It outlines the key featur
 - Implement scalability solutions to span across multiple hosts
 - Adding detailed analytics and monitoring capabilities using tools like Prometheus and Grafana
 - Publish packages for different package managers (e.g., Homebrew, Chocolatey)
+- Add a GUI for easier interaction with the network
 
 ## Milestones
 
