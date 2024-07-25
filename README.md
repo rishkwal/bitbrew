@@ -9,6 +9,10 @@
     
 Bitbrew is a simple CLI tool to help you create and manage private Bitcoin test networks. It is designed to be easy to use and to provide a simple interface to the Bitcoin Core RPC API. It leverages the regtest mode of Bitcoin Core to create a private network that can be used for testing, development and teaching purposes.
 
+<p align=center>
+  <img src="https://github.com/user-attachments/assets/599829ef-1807-4dda-817e-d08fd95cbbeb" height=500/>
+</p>
+
 ## Prerequisites
 
 ### Docker
