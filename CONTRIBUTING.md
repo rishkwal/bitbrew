@@ -4,7 +4,7 @@ We welcome contributions to this project. Here is a step by step guide to help y
 
 ## Installation
 
-Before you start make sure you have `node` and `npm` installed on your machine. Alos make sure you have docker installed and running.
+Before you start make sure you have `node` and `npm` installed on your machine. Also make sure you have docker installed and running.
 
 Remove any existing installations of the package:
 
