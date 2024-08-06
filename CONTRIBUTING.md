@@ -25,7 +25,19 @@ cd bitbrew
 npm install --legacy-peer-deps
 ```
 
-3. Link the package
+3. Build the package
+
+```bash
+npm run build
+```
+
+4. Give executable permissions to the binary
+
+```bash
+chmod +x ./dist/src/bin/bitbrew.js
+```
+
+5. Link the package
 
 ```bash
 npm link
